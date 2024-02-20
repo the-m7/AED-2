@@ -8,16 +8,18 @@ public class Main {
 		ArrayList<Integer> Lista = new ArrayList<Integer>();
 		
 		int size = 1000;
-		int max = 100;
+		int max = 10;
 		
 		for(int i=0; i<size; i++) {
 			Lista.add((int)(Math.random() * max) + 1);
 			System.out.print(Lista.get(i)+", ");
 		}
 		
+		System.out.println("\nInicio");  
+		
 		Lista=QuickSort.Sort(Lista);
 	
-		System.out.println();
+		System.out.println("Fin");
 
 		for(int i=0; i<size; i++) {
 			System.out.print(Lista.get(i)+", ");
