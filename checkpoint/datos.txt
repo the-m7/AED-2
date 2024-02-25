@@ -1,0 +1,4 @@
+student1;pass1;Student
+professor1;pass2;Professor
+employee1;pass3;Employee
+audit1;pass4;Audit
