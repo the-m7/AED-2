@@ -5,6 +5,12 @@ import java.util.HashMap;
 
 public class CalculadoraPostfix implements ICalculadoraPostfix {
 
+	int stack_type;
+	
+	public CalculadoraPostfix(int i) {
+		stack_type = i;
+	}
+
 	@Override
 	public ArrayList<Character> validateExpression(String expression) throws Exception {
 		HashMap<Character, Integer> Simbolos =  new HashMap<Character, Integer>();
@@ -18,7 +24,7 @@ public class CalculadoraPostfix implements ICalculadoraPostfix {
 		Simbolos.put('*', 1);
 		Simbolos.put('/', 1);
 		
-		IStack<Character> Stack = FactoryStack.getInstance(0);
+		IStack<Character> Stack = FactoryStack.getInstance(stack_type);
 		Stack.push('#');
 		
 		ArrayList<Character> ListExpr = new ArrayList<Character>();
@@ -64,7 +70,7 @@ public class CalculadoraPostfix implements ICalculadoraPostfix {
 	@Override
 	public int resolve(ArrayList<Character> expression) throws Exception {
 		
-		IStack<Integer> Stack = FactoryStack.getInstance(0);
+		IStack<Integer> Stack = FactoryStack.getInstance(stack_type);
 		
 		int size = expression.size();
 		

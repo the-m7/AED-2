@@ -12,8 +12,10 @@ public class Main {
             List<String> expressions = FileHelper.readFile("datos.txt");
             
             
+           
+            
             // Prueba para el validate Expression
-            ICalculadoraPostfix miCalc = new CalculadoraPostfix();
+            ICalculadoraPostfix miCalc = new CalculadoraPostfix(1);
             for (String expression : expressions) {
                 try {
                 	System.out.println(expression);

@@ -7,7 +7,13 @@ public class FactoryStack {
 	}
 
 	public static <T> IStack<T> getInstance(int n){
-		return new StackVector<T>();
+		switch(n) {
+		case 0:
+			return new StackVector<T>();
+		case 1:
+			return new StackDoubleNodes<T>();
+		}
+		return null;
 		
 	}
 }
