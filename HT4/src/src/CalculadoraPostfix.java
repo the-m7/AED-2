@@ -1,48 +1,28 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CalculadoraPostfix implements ICalculadoraPostfix {
 
 	@Override
 	public ArrayList<String> validateExpression(String expression) throws Exception {
-		String simbolos = "+-*/%";
+		HashMap<String, Integer> Simbolos =  new HashMap<String, Integer>();
+		
+		Simbolos.put("+", 0);
+		Simbolos.put("-", 0);
+		Simbolos.put("*", 1);
+		Simbolos.put("/", 1);
 		
 		ArrayList<String> ListExpr = new ArrayList<String>();
-		int size = expression.length();
-		String snum = "";
 		
-		for(int i=0; i<size; i++) {
-			Character e = expression.charAt(i);
-			String e2 = e.toString();
-			
-			if(Character.isDigit(e)) {
-				snum=snum.concat(e2);
-			}
-			else if(simbolos.contains(e2)) {
-				if(!snum.equals("")) {
-					ListExpr.add(snum);
-					snum="";
-				}
-				ListExpr.add(e2);
-			}
-			else if(e.equals(' ')) {
-				if(!snum.equals("")) {
-					ListExpr.add(snum);
-					snum="";
-				}
-			}
-			else
-				throw new Exception("Caracter no reconocido");
-		//System.out.println(snum);
-		}
 		return ListExpr;
 	}
 
 	@Override
 	public int resolve(ArrayList<String> expression) throws Exception {
 		
-		StackVector<Integer> Stack = new StackVector<Integer>();
+		IStack<Integer> Stack = FactoryStack.ge;
 		
 		int size = expression.size();
 		
