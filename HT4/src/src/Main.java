@@ -10,9 +10,8 @@ public class Main {
         try {
             // Lee el archivo y obtiene la lista de expresiones
             List<String> expressions = FileHelper.readFile("datos.txt");
-            
-            
            
+           FactoryStack.getInstance(FactoryStack.elegirImplementacionStack());
             
             // Prueba para el validate Expression
             ICalculadoraPostfix miCalc = new CalculadoraPostfix(1);
