@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -21,15 +22,25 @@ public class Main {
 
                 Automovil vehiculo = new Automovil(marca, modelo, linea, placa, precio);
                 Tree.insert(placa, vehiculo);
+                System.out.println("Dato ingresado");
+            } else {
+                System.out.println("No se ingresó el dato");
             }
         }
         SaveInArrayListWalk<Automovil> walk = new SaveInArrayListWalk<Automovil>();
 
         Tree.InOrderWalk(walk);
 
-        
-        System.out.println(walk.getListado().toString());
+        printlist(walk.getListado());
+        //System.out.println(walk.getListado().toString());
 
         scan.close();
+    }
+
+    public static void printlist(ArrayList<Automovil> lista){
+        for (Automovil ele : lista){
+            System.out.println(ele.toString());
+        }
+
     }
 }
