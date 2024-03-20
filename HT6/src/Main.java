@@ -13,21 +13,6 @@ class Main {
 
         int opcion = scanner.nextInt();
 
-        String tipoMapa;
-        switch (opcion) {
-            case 1:
-                tipoMapa = "HashMap";
-                break;
-            case 2:
-                tipoMapa = "TreeMap";
-                break;
-            case 3:
-                tipoMapa = "LinkedHashMap";
-                break;
-            default:
-                throw new IllegalArgumentException("Opción no válida: " + opcion);
-        }
-
-        // Map<String, String> mapa = crearMapa(tipoMapa);
+        Map<String, String> mapa = crearMapa(opcion);
     }
 }

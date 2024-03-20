@@ -7,11 +7,11 @@ public class MapFactory {
 
     public static Map crearMapa(String tipoMapa) {
         switch (tipoMapa) {
-            case "HashMap":
+            case 1:
                 return new HashMap<>();
-            case "TreeMap":
+            case 2:
                 return new TreeMap<>();
-            case "LinkedHashMap":
+            case 3:
                 return new LinkedHashMap<>();
             default:
                 throw new IllegalArgumentException("Opción no válida");
