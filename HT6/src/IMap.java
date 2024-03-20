@@ -1,4 +1,4 @@
-public interface Map<K, V> {
+public interface IMap<K, V> {
     /**
      * @post returns the number of entries in the map
      */

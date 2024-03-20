@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 public class MapFactory {
 
-    public static Map crearMapa(String tipoMapa) {
+    public static Map crearMapa(int tipoMapa) {
         switch (tipoMapa) {
             case 1:
                 return new HashMap<>();
