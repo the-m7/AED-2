@@ -1,8 +1,11 @@
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
 class Main {
     public static void main(String[] args) {
+
+        ArrayList<Estudiante> Lista = JSONRead.jsonRead();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -20,6 +23,6 @@ class Main {
 
         int opcion_hash = scanner.nextInt();
 
-        IMap mapa = MapFactory.crearMapa(opcion_mapa);
+        //IMap mapa = MapFactory.crearMapa(opcion_mapa);
     }
 }
