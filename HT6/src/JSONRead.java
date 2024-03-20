@@ -8,12 +8,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser; 
 
 public class JSONRead {
-        public static ArrayList<Estudiante> jsonRead() {
+        public static ArrayList<Estudiante> jsonRead(String fileName) {
         JSONParser parser = new JSONParser();
 
         ArrayList<Estudiante> Lista = new ArrayList<Estudiante>();
 
-        try (FileReader reader = new FileReader("estudiantes.json")) {
+        try (FileReader reader = new FileReader(fileName)) {
             // Parseando el archivo JSON
             Object obj = parser.parse(reader);
 
@@ -28,7 +28,7 @@ public class JSONRead {
                 String name = (String) jsonObject.get("name");
                 String phone = (String) jsonObject.get("phone");
                 String email = (String) jsonObject.get("email");
-                Integer postalZip = (Integer) jsonObject.get("email");
+                String postalZip = (String) jsonObject.get("postalZip");
                 String country = (String) jsonObject.get("country");
                 
 
@@ -36,12 +36,15 @@ public class JSONRead {
                 Lista.add(new Estudiante(name, phone, email, country, postalZip));
                 
             }
+            System.out.println(Lista.get(0).toString());
+            System.out.println(Lista.get(1).toString());
+            return Lista;
         } catch (Exception e) {
             e.printStackTrace();
             
         }
-        System.out.println(Lista.toString());
-        return Lista;
+        //System.out.println(Lista.toString());
+        return null;
     }
 
 }

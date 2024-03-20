@@ -5,7 +5,8 @@ import java.util.Scanner;
 class Main {
     public static void main(String[] args) {
 
-        ArrayList<Estudiante> Lista = JSONRead.jsonRead();
+        ArrayList<Estudiante> Lista = JSONRead.jsonRead("C:\\Users\\marti\\OneDrive\\Documentos\\uni\\s3\\progra\\git\\AED-2\\HT6\\src\\estudiantes.json");
+
 
         Scanner scanner = new Scanner(System.in);
 
