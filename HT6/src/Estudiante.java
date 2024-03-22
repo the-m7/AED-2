@@ -1,12 +1,12 @@
 public class Estudiante {
     String Name, Phone, Email, PostalZip, County;
-    
+
     public Estudiante(String name, String phone, String email, String county, String postalZip) {
-        Name = name;
-        Phone = phone;
-        Email = email;
-        County = county;
-        PostalZip = postalZip;
+        this.Name = name;
+        this.Phone = phone;
+        this.Email = email;
+        this.County = county;
+        this.PostalZip = postalZip;
     }
 
     @Override
@@ -19,5 +19,4 @@ public class Estudiante {
         return Email;
     }
 
-    
 }

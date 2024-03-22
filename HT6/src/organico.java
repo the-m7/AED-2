@@ -1,8 +1,8 @@
-public class organico implements IFuncionesHash{
+public class organico implements IFuncionesHash {
 
     @Override
-    public String calcularHash(String cadena) {
+    public int calcularHash(Object cadena) {
         return cadena;
     }
-    
+
 }
