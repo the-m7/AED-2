@@ -3,23 +3,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
-public class MapFactory<K, V> {
-    public static final int HASHMAP = 1;
-    public static final int TREEMAP = 2;
-    public static final int LINKEDHASHMAP = 3;
-
-    public AbstractMap<K, V> getMapInstance(int mapType){
-
+class MapFactory<K, V> {
+    public static AbstractMap<String, Estudiante> getMapInstance(int mapType) {
         switch (mapType) {
-            case HASHMAP:
-                return new HashMap<K, V>();
-            case TREEMAP:
-                return new TreeMap<K, V>();
-            case LINKEDHASHMAP:
-                return new LinkedHashMap<K, V>();
+            case 1:
+                return new HashMap<>();
+            case 2:
+                return new TreeMap<>();
+            case 3:
+                return new LinkedHashMap<>();
             default:
-                return new HashMap<K,V>();
+                throw new IllegalArgumentException("Tipo de mapa no válido");
         }
-
     }
 }

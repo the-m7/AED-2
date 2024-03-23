@@ -2,11 +2,11 @@ public class Estudiante {
     String Name, Phone, Email, PostalZip, County;
 
     public Estudiante(String name, String phone, String email, String county, String postalZip) {
-        this.Name = name;
-        this.Phone = phone;
-        this.Email = email;
-        this.County = county;
-        this.PostalZip = postalZip;
+        Name = name;
+        Phone = phone;
+        Email = email;
+        County = county;
+        PostalZip = postalZip;
     }
 
     @Override
@@ -19,4 +19,12 @@ public class Estudiante {
         return Email;
     }
 
+    public String getCounty() {
+        return County;
+    }
+
+    public void put(String calcularHash, Estudiante estudiante) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'put'");
+    }
 }

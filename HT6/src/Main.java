@@ -1,53 +1,78 @@
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 class Main {
     public static void main(String[] args) {
 
-        ArrayList<Estudiante> Lista = JSONRead.jsonRead("src\\estudiantes.json");
+        List<Estudiante> estudiantes = JSONRead
+                .jsonRead("C:\\Users\\Usuario\\OneDrive\\Escritorio\\HT6\\AED-2\\HT6\\src\\estudiantes.json");
+        // "C:\\Users\\Usuario\\OneDrive\\Escritorio\\HT6\\AED-2\\HT6\\src\\estudiantes.json"
+        // "C:\\Users\\marti\\OneDrive\\Documentos\\uni\\s3\\progra\\git\\AED-2\\HT6\\src\\estudiantes.json"
 
         Scanner scanner = new Scanner(System.in);
-        
-        if(Lista!=null){
-            
+
+        if (estudiantes != null && !estudiantes.isEmpty()) {
             System.out.println("Seleccione el tipo de mapa que desea crear:");
             System.out.println("1. HashMap");
             System.out.println("2. TreeMap");
             System.out.println("3. LinkedHashMap");
-            
+
             int opcion_mapa = scanner.nextInt();
-            
+            AbstractMap<String, Estudiante> mapa = MapFactory.getMapInstance(opcion_mapa);
+
             System.out.println("Selecciona el tipo de algoritmo para la función hash:");
             System.out.println("1. MD5");
             System.out.println("2. SHA-1");
             System.out.println("3. Orgánica");
-            
+
             int opcion_hash = scanner.nextInt();
-            
-            //MapFactory<String, Estudiante> fact = new MapFactory<String, Estudiante>();
+            IFuncionesHash funcionHash = HashFactory.getHashInstance(opcion_hash);
 
-            AbstractMap<String, Estudiante> mapa = new MapFactory<String, Estudiante>().getMapInstance(opcion_mapa);
-
-            IFuncionesHash hash = HashFactory.getHashInstance(opcion_hash);
-
-            ArrayList<String> Lemails = new ArrayList<String>();
-            ArrayList<Estudiante> Repetidos = new ArrayList<Estudiante>();
-            for(Estudiante ele : Lista){
-                String email = ele.getEmail();
-                if(!Lemails.contains(email)){
-                    Lemails.add(email);
-                    String key = hash.calcularHash(email);
-                    mapa.put(key, ele);
-                } else {
-                    Repetidos.add(ele);
-                }
+            for (Estudiante estudiante : estudiantes) {
+                mapa.put(funcionHash.calcularHash(estudiante.getEmail()), estudiante);
             }
-            System.out.println(Repetidos.size());
-        }
-        
-        scanner.close();
 
+            System.out.println("Ingrese la llave del estudiante a buscar:");
+            String llave = scanner.nextLine();
+            buscarEstudiantePorLlave(mapa, llave);
+
+            System.out.println("Ingrese la nacionalidad de los estudiantes a buscar:");
+            String nacionalidad = scanner.nextLine();
+            buscarEstudiantesPorNacionalidad(mapa, nacionalidad);
+        }
+    }
+
+    // Método de búsqueda por llave
+    public static void buscarEstudiantePorLlave(AbstractMap mapa, String llave) {
+        if (mapa.containsKey(llave)) {
+            Estudiante estudiante = (Estudiante) mapa.get(llave);
+            System.out.println("Estudiante encontrado:");
+            System.out.println(estudiante);
+        } else {
+            System.out.println("Estudiante no encontrado con la llave: " + llave);
+        }
+    }
+
+    // **Método de búsqueda por nacionalidad**
+    public static void buscarEstudiantesPorNacionalidad(AbstractMap mapa, String nacionalidad) {
+        List<Estudiante> estudiantesEncontrados = new ArrayList<>();
+        for (Map.Entry<String, Estudiante> entry : mapa.entrySet()) {
+            Estudiante estudiante = entry.getValue();
+            if (estudiante.getCounty().equals(nacionalidad)) {
+                estudiantesEncontrados.add(estudiante);
+            }
+        }
+
+        if (!estudiantesEncontrados.isEmpty()) {
+            System.out.println("Estudiantes encontrados con la nacionalidad: " + nacionalidad);
+            for (Estudiante estudiante : estudiantesEncontrados) {
+                System.out.println(estudiante);
+            }
+        } else {
+            System.out.println("No se encontraron estudiantes con la nacionalidad: " + nacionalidad);
+        }
     }
 }

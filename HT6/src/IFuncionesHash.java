@@ -1,3 +1,3 @@
 public interface IFuncionesHash {
-    public int calcularHash(Object data);
+    String calcularHash(String data);
 }
