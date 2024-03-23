@@ -8,6 +8,8 @@ public class HashFactory {
                 return new MD5();
             case 3:
                 return new organico();
+            case 4:
+                return null;
             default:
                 return new SHA();
         }

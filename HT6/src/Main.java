@@ -14,37 +14,47 @@ class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        if (estudiantes != null && !estudiantes.isEmpty()) {
-            System.out.println("Seleccione el tipo de mapa que desea crear:");
-            System.out.println("1. HashMap");
-            System.out.println("2. TreeMap");
-            System.out.println("3. LinkedHashMap");
+        boolean salir = false;
 
-            int opcion_mapa = scanner.nextInt();
-            AbstractMap<String, Estudiante> mapa = MapFactory.getMapInstance(opcion_mapa);
+        do {
+            if (estudiantes != null && !estudiantes.isEmpty()) {
+                System.out.println("\n====== Seleccione el tipo de mapa que desea crear ========");
+                System.out.println("1. HashMap");
+                System.out.println("2. TreeMap");
+                System.out.println("3. LinkedHashMap");
 
-            System.out.println("Selecciona el tipo de algoritmo para la función hash:");
-            System.out.println("1. MD5");
-            System.out.println("2. SHA-1");
-            System.out.println("3. Orgánica");
+                int opcion_mapa = scanner.nextInt();
+                AbstractMap<String, Estudiante> mapa = MapFactory.getMapInstance(opcion_mapa);
 
-            int opcion_hash = scanner.nextInt();
-            IFuncionesHash funcionHash = HashFactory.getHashInstance(opcion_hash);
+                System.out.println("\n===== Seleccione el tipo de algoritmo para la función hash =====");
+                System.out.println("1. MD5");
+                System.out.println("2. SHA-1");
+                System.out.println("3. Orgánica");
+                System.out.println("4. Salir");
 
-            scanner.nextLine();
+                int opcion_hash = scanner.nextInt();
+                IFuncionesHash funcionHash = HashFactory.getHashInstance(opcion_hash);
 
-            for (Estudiante estudiante : estudiantes) {
-                mapa.put(funcionHash.calcularHash(estudiante.getEmail()), estudiante);
+                if (opcion_hash == 4) {
+                    salir = true;
+                    break;
+                }
+
+                scanner.nextLine();
+
+                for (Estudiante estudiante : estudiantes) {
+                    mapa.put(funcionHash.calcularHash(estudiante.getEmail()), estudiante);
+                }
+
+                System.out.println("Ingrese la llave del estudiante a buscar:");
+                String llave = scanner.nextLine();
+                buscarEstudiantePorLlave(mapa, llave);
+
+                System.out.println("Ingrese la nacionalidad de los estudiantes a buscar:");
+                String nacionalidad = scanner.nextLine();
+                buscarEstudiantesPorNacionalidad(mapa, nacionalidad);
             }
-
-            System.out.println("Ingrese la llave del estudiante a buscar:");
-            String llave = scanner.nextLine();
-            buscarEstudiantePorLlave(mapa, llave);
-
-            System.out.println("Ingrese la nacionalidad de los estudiantes a buscar:");
-            String nacionalidad = scanner.nextLine();
-            buscarEstudiantesPorNacionalidad(mapa, nacionalidad);
-        }
+        } while (!salir);
     }
 
     // Método de búsqueda por llave
