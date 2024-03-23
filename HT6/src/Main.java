@@ -31,6 +31,8 @@ class Main {
             int opcion_hash = scanner.nextInt();
             IFuncionesHash funcionHash = HashFactory.getHashInstance(opcion_hash);
 
+            scanner.nextLine();
+
             for (Estudiante estudiante : estudiantes) {
                 mapa.put(funcionHash.calcularHash(estudiante.getEmail()), estudiante);
             }
@@ -46,7 +48,7 @@ class Main {
     }
 
     // Método de búsqueda por llave
-    public static void buscarEstudiantePorLlave(AbstractMap mapa, String llave) {
+    public static void buscarEstudiantePorLlave(AbstractMap<String, Estudiante> mapa, String llave) {
         if (mapa.containsKey(llave)) {
             Estudiante estudiante = (Estudiante) mapa.get(llave);
             System.out.println("Estudiante encontrado:");
@@ -57,7 +59,7 @@ class Main {
     }
 
     // **Método de búsqueda por nacionalidad**
-    public static void buscarEstudiantesPorNacionalidad(AbstractMap mapa, String nacionalidad) {
+    public static void buscarEstudiantesPorNacionalidad(AbstractMap<String, Estudiante> mapa, String nacionalidad) {
         List<Estudiante> estudiantesEncontrados = new ArrayList<>();
         for (Map.Entry<String, Estudiante> entry : mapa.entrySet()) {
             Estudiante estudiante = entry.getValue();

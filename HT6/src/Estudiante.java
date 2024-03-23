@@ -23,8 +23,4 @@ public class Estudiante {
         return County;
     }
 
-    public void put(String calcularHash, Estudiante estudiante) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
-    }
 }
