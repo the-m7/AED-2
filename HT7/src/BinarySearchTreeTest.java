@@ -11,48 +11,48 @@ public class BinarySearchTreeTest {
     @Test
     public void testCount() {
 
-        BinarySearchTree<Integer, String> arbolBST = new BinarySearchTree<Integer, String>(new NumberComparator<Integer>());
+        BinarySearchTree<String, String> arbolBST = new BinarySearchTree<String, String>(new StrComparator<String>());
         assertEquals(0, arbolBST.count());
 
-        arbolBST.insert(20, "Veinte");
+        arbolBST.insert("Veinte", "Veinte");
         assertEquals(1, arbolBST.count());
 
-        arbolBST.insert(30, "Treinta");
-        arbolBST.insert(10, "Diez");
+        arbolBST.insert("Treinta", "Treinta");
+        arbolBST.insert("Diez", "Diez");
         assertEquals(3, arbolBST.count());
 
     }
 
     @Test
     public void testFind() {
-        BinarySearchTree<Integer, String> arbolBST = new BinarySearchTree<Integer, String>(new NumberComparator<Integer>());
+        BinarySearchTree<String, String> arbolBST = new BinarySearchTree<String, String>(new StrComparator<String>());
 
-        arbolBST.insert(30, "Treinta");
-        arbolBST.insert(20, "Veinte");
-        arbolBST.insert(10, "Diez");
-        arbolBST.insert(5, "Cinco");
-        arbolBST.insert(90, "Noventa");
-        arbolBST.insert(99, "Noventa y Nueve");
-        arbolBST.insert(25, "Vienticinco");
+        arbolBST.insert("Treinta", "Treinta");
+        arbolBST.insert("Veinte","Veinte");
+        arbolBST.insert("Diez", "Diez");
+        arbolBST.insert("Cinco", "Cinco");
+        arbolBST.insert("Noventa", "Noventa");
+        arbolBST.insert("Noventa y Nueve", "Noventa y Nueve");
+        arbolBST.insert("Vienticinco", "Vienticinco");
 
-        assertEquals("Treinta", arbolBST.find(30)); //Busco la raiz
-        assertEquals("Noventa y Nueve", arbolBST.find(99)); //Busco el hijo más derecho
-        assertEquals("Cinco", arbolBST.find(5)); //Busco el hijo mas izquierdo
-        assertNull(arbolBST.find(100)); //El numero 100 no se encuentra
+        assertEquals("Treinta", arbolBST.find("Treinta")); //Busco la raiz
+        assertEquals("Noventa y Nueve", arbolBST.find("Noventa y Nueve")); //Busco el hijo más derecho
+        assertEquals("Cinco", arbolBST.find("Cinco")); //Busco el hijo mas izquierdo
+        assertNull(arbolBST.find("Cien")); //El numero 100 no se encuentra
     }
 
     @Test
     public void testInsert() {
-        BinarySearchTree<Integer, String> arbolBST = new BinarySearchTree<Integer, String>(new NumberComparator<Integer>());
+        BinarySearchTree<String, String> arbolBST = new BinarySearchTree<String, String>(new StrComparator<String>());
         assertEquals(0, arbolBST.count());
 
-        arbolBST.insert(30, "Treinta");
-        arbolBST.insert(20, "Veinte");
-        arbolBST.insert(10, "Diez");
-        arbolBST.insert(5, "Cinco");
-        arbolBST.insert(90, "Noventa");
-        arbolBST.insert(99, "Noventa y Nueve");
-        arbolBST.insert(25, "Vienticinco");
+        arbolBST.insert("Treinta", "Treinta");
+        arbolBST.insert("Veinte", "Veinte");
+        arbolBST.insert("Diez", "Diez");
+        arbolBST.insert("Cinco", "Cinco");
+        arbolBST.insert("Noventa", "Noventa");
+        arbolBST.insert("Noventa y Nueve", "Noventa y Nueve");
+        arbolBST.insert("Vienticinco", "Vienticinco");
 
         assertFalse(arbolBST.isEmpty());
         
@@ -61,35 +61,35 @@ public class BinarySearchTreeTest {
 
     @Test
     public void testIsEmpty() {
-        BinarySearchTree<Integer, String> arbolBST = new BinarySearchTree<Integer, String>(new NumberComparator<Integer>());
+        BinarySearchTree<String, String> arbolBST = new BinarySearchTree<String, String>(new StrComparator<String>());
         assertTrue(arbolBST.isEmpty());
 
-        arbolBST.insert(20, "Hola");
+        arbolBST.insert("Hola", "Hola");
         assertFalse(arbolBST.isEmpty());
         
     }
 
     @Test
     public void testInOrderWalk() {
-        BinarySearchTree<Integer, String> arbolBST = new BinarySearchTree<Integer, String>(new NumberComparator<Integer>());
+        BinarySearchTree<String, String> arbolBST = new BinarySearchTree<String, String>(new StrComparator<String>());
 
-        arbolBST.insert(30, "Treinta");
-        arbolBST.insert(20, "Veinte");
-        arbolBST.insert(10, "Diez");
-        arbolBST.insert(5, "Cinco");
-        arbolBST.insert(90, "Noventa");
-        arbolBST.insert(99, "Noventa y Nueve");
-        arbolBST.insert(25, "Vienticinco");
+        arbolBST.insert("Treinta", "Treinta");
+        arbolBST.insert("Veinte", "Veinte");
+        arbolBST.insert("Diez", "Diez");
+        arbolBST.insert("Cinco", "Cinco");
+        arbolBST.insert("Noventa", "Noventa");
+        arbolBST.insert("Noventa y Nueve", "Noventa y Nueve");
+        arbolBST.insert("Vienticinco", "Vienticinco");
 
         //Creo el arrayList que debería ser resultante
         ArrayList<String> arregloEsperado = new ArrayList<String>();
         arregloEsperado.add("Cinco");
         arregloEsperado.add("Diez");
-        arregloEsperado.add("Veinte");
-        arregloEsperado.add("Vienticinco");
-        arregloEsperado.add("Treinta");
         arregloEsperado.add("Noventa");
         arregloEsperado.add("Noventa y Nueve");
+        arregloEsperado.add("Treinta");
+        arregloEsperado.add("Veinte");
+        arregloEsperado.add("Vienticinco");
 
         //Creo el objeto del recorrido
         SaveInArrayListWalk<String> recorridoEnOrden = new SaveInArrayListWalk<String>();
