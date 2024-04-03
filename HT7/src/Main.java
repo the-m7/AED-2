@@ -27,6 +27,8 @@ public class Main {
                 TreeFrench.insert(keyF, Palabras);
             }
 
+            TreeEnglish.InOrderWalk(new ConsolaWalk<String[]>());
+
             Scanner scan = new Scanner(System.in);
 
             int from_sel = -1;
@@ -105,7 +107,7 @@ public class Main {
                     String LineaTrad = "";
                     
                     for(String Palabra : Linea2){
-                        Palabra = Palabra.strip();
+                        Palabra = Palabra.strip().toLowerCase();
                         
                         String[] PalTradL = selTree.find(Palabra);
 
@@ -132,4 +134,6 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+
 }
