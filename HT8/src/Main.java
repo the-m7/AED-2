@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -12,6 +11,7 @@ public class Main {
 
             for(String Linea : datos){
                 String[] Pals = Linea.split(",");
+                //System.out.println(Linea);
                 String name = Pals[0];
                 String user = Pals[1];
                 Integer ni = Integer.parseInt(Pals[2]);
