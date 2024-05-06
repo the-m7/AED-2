@@ -13,8 +13,7 @@ public class Main {
         printCode(huff.root, "");
 
         HashMap<Character, String> hash = new HashMap<Character, String>();
-        HashMap<Character, Byte> hash2 = new HashMap<Character, Byte>();
-        HashCode(huff.root, "", hash2);
+        HashCode(huff.root, "", hash);
 
         System.out.println(hash.toString());
 
@@ -45,7 +44,7 @@ public class Main {
         printCode(root.right, s + "1"); 
     }
 
-    public static void HashCode(HuffmanNode root, String s, HashMap<Character,Byte> hash) 
+    public static void HashCode(HuffmanNode root, String s, HashMap<Character,String> hash) 
     { 
   
         // base case; if the left and right are null 
@@ -55,10 +54,7 @@ public class Main {
             && Character.isLetter(root.c)) { 
   
             // c is the character in the node 
-            System.out.println(s);
-            System.out.println(Byte.parseByte(s));
-            hash.put(root.c,Byte.parseByte(s));
-            System.out.println(hash.toString());
+            hash.put(root.c,s);
   
             return; 
         } 
