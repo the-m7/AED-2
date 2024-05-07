@@ -27,7 +27,7 @@ public class Main {
         int[] freq = new int[frecuencias.size()];
 
         // Mostrar las frecuencias
-        System.out.println("Frecuencias de caracteres:");
+        System.out.println("\nFrecuencias de caracteres:");
         int i = 0;
         for (char c : frecuencias.keySet()) {
             System.out.println("'" + c + "': " + frecuencias.get(c));
@@ -47,18 +47,19 @@ public class Main {
         HashMap<Character, String> hash = new HashMap<Character, String>();
         HashCode(huff.root, "", hash);
 
-        System.out.println("-------------");
+        System.out.println("Caracteres en el HuffmanTree:");
         System.out.println(hash.toString());
 
         // imprime el texto del archivo codificado
         String texto_codificado = encodeText(text, hash);
-        System.out.println("Texto codificado:");
+        System.out.println("\nTexto codificado:");
         System.out.println(texto_codificado);
 
         // Ajustar el texto codificado para que sea divisible entre 8
         while (texto_codificado.length() % 8 != 0) {
             texto_codificado += "0";
         }
+        String texto_codificado_o = texto_codificado;
 
         // Convertir el texto codificado a valores decimales y luego restar 128
         ArrayList<Byte> bytesSalida = new ArrayList<>();
@@ -70,7 +71,12 @@ public class Main {
 
         // Guardar los bytes en un archivo binario
         FileHelper.saveBinaryFile(bytesSalida, "src\\texto_codificado.txt");
+        System.out.println("\nComparasión de archivos:");
         FileHelper.compareFileSizes("src\\text.txt", "src\\texto_codificado.txt");
+
+        System.out.println("\nArchivo decodificado:");
+        // Imprime el texto decodificado
+        System.out.println(decodeText(texto_codificado_o, huff.root));
     }
 
     public static void printCode(HuffmanNode root, String s) {
@@ -89,8 +95,7 @@ public class Main {
         // if we go to left then add "0" to the code.
         // if we go to the right add"1" to the code.
 
-        // recursive calls for left and
-        // right sub-tree of the generated tree.
+        // recursive calls for left and right sub-tree of the generated tree.
         printCode(root.left, s + "0");
         printCode(root.right, s + "1");
     }
@@ -109,8 +114,7 @@ public class Main {
         // if we go to left then add "0" to the code.
         // if we go to the right add"1" to the code.
 
-        // recursive calls for left and
-        // right sub-tree of the generated tree.
+        // recursive calls for left and right sub-tree of the generated tree.
         HashCode(root.left, s + "0", hash);
         HashCode(root.right, s + "1", hash);
     }
