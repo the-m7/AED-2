@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,26 @@ public class FileHelper {
 
         return lines;
     }
+
+    public static void saveFile(String text, String filePath) {
+
+        try {
+            // Creates a FileWriter
+            FileWriter file = new FileWriter(filePath);
+
+            // Creates a BufferedWriter
+            BufferedWriter output = new BufferedWriter(file);
+
+            // Writes the string to the file
+            output.write(text);
+
+            // Closes the writer
+            output.close();
+        }catch (Exception e) {
+            e.getStackTrace();
+        }
+    }
+
 
     // Guarda archivo bianrio
     public static void saveBinaryFile(ArrayList<Byte> bytes, String filePath) {

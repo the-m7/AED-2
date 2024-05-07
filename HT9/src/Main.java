@@ -23,6 +23,8 @@ public class Main {
         // Crear una lista para almacenar las frecuencias
         ArrayList<Integer> listaFrecuencias = new ArrayList<>(frecuencias.values());
 
+        String archText = "";
+
         char[] chars = new char[frecuencias.size()];
         int[] freq = new int[frecuencias.size()];
 
@@ -31,10 +33,13 @@ public class Main {
         int i = 0;
         for (char c : frecuencias.keySet()) {
             System.out.println("'" + c + "': " + frecuencias.get(c));
+            archText+=c + ":" + frecuencias.get(c)+"\n";
             chars[i] = c;
             freq[i] = frecuencias.get(c);
             i++;
         }
+
+        FileHelper.saveFile(archText.substring(0, archText.length()-1), "src\\frecuencias.txt");
 
         // Mostrar la lista de frecuencias
         System.out.println("Lista de frecuencias:");
