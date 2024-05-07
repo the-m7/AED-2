@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,9 +54,11 @@ public class FileHelper {
         return lines;
     }
 
+    // Guarda archivo bianrio
     public static void saveBinaryFile(ArrayList<Byte> bytes, String filePath) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            new FileOutputStream(filePath).close();
             FileOutputStream fos = new FileOutputStream(filePath);
 
             byte[] datosOutput = new byte[bytes.size()];
@@ -72,6 +75,28 @@ public class FileHelper {
             System.out.println("Archivo binario guardado correctamente.");
         } catch (IOException e) {
             System.err.println("Error al guardar el archivo binario: " + e.getMessage());
+        }
+    }
+
+    // Compara el tamaño de dos archivos: texto original, texto codificado
+    public static void compareFileSizes(String filePath1, String filePath2) {
+        File file1 = new File(filePath1);
+        File file2 = new File(filePath2);
+
+        long fileSize1 = file1.length();
+        long fileSize2 = file2.length();
+
+        System.out.println("Tamaño del archivo text.txt: " + fileSize1 + " bytes");
+        System.out.println("Tamaño del archivo texto_codificado.txt: " + fileSize2 + " bytes");
+
+        if (fileSize1 == fileSize2) {
+            System.out.println("Los archivos tienen el mismo tamaño.");
+        } else if (fileSize1 > fileSize2) {
+            System.out
+                    .println("El archivo con el texto original es más grande que el archivo con el texto codificado.");
+        } else {
+            System.out
+                    .println("El archivo con el texto codificado es más grande que el archivo con el texto original.");
         }
     }
 }

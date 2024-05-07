@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Text;
-
 public class Main {
     public static void main(String[] args) throws IOException {
 
@@ -67,11 +65,12 @@ public class Main {
         while (texto_codificado.length() > 0) {
             String ochoBites = texto_codificado.substring(0, 8);
             texto_codificado = texto_codificado.substring(8);
-            bytesSalida.add((byte) (Integer.parseInt(ochoBites, 2) - 128));
+            bytesSalida.add((byte) (binarioADecimal(Integer.parseInt(ochoBites)) - 128));
         }
 
         // Guardar los bytes en un archivo binario
         FileHelper.saveBinaryFile(bytesSalida, "src\\texto_codificado.txt");
+        FileHelper.compareFileSizes("src\\text.txt", "src\\texto_codificado.txt");
     }
 
     public static void printCode(HuffmanNode root, String s) {
@@ -143,6 +142,20 @@ public class Main {
             }
         }
         return decodedText.toString();
+    }
+
+    public static int binarioADecimal(int numeroBinario) {
+        int numeroDecimal = 0;
+        int base = 1; // La base inicial es 2^0
+
+        while (numeroBinario > 0) {
+            int digito = numeroBinario % 10; // Obtener el último dígito del número binario
+            numeroBinario = numeroBinario / 10; // Descartar el último dígito
+            numeroDecimal += digito * base; // Multiplicar el dígito por la base y sumarlo al número decimal
+            base *= 2; // Incrementar la base multiplicando por 2
+        }
+
+        return numeroDecimal;
     }
 
 }

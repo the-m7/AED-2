@@ -1,1 +1,1 @@
-The index of the first character is 0, the second character is 1, and so on.
+ayer comi una manzana roja muy sabrosa
