@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class FileHelper {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                // System.out.println(line);
                 lines = lines.concat(" ".concat(line));
             }
         }
@@ -50,5 +51,27 @@ public class FileHelper {
         System.out.println(lines);
 
         return lines;
+    }
+
+    public static void saveBinaryFile(ArrayList<Byte> bytes, String filePath) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            FileOutputStream fos = new FileOutputStream(filePath);
+
+            byte[] datosOutput = new byte[bytes.size()];
+            for (int i = 0; i < bytes.size(); i++) {
+                datosOutput[i] = bytes.get(i);
+            }
+
+            // Escribir los datos en el archivo
+            fos.write(datosOutput);
+
+            // Cerrar el flujo de salida
+            fos.close();
+
+            System.out.println("Archivo binario guardado correctamente.");
+        } catch (IOException e) {
+            System.err.println("Error al guardar el archivo binario: " + e.getMessage());
+        }
     }
 }
