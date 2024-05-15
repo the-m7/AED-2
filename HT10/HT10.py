@@ -30,6 +30,7 @@ class Graphs():
 class app():
     def __init__(self):
         self.Graphs = Graphs("logistica.txt")
-        
+
+app()   
 
                     
