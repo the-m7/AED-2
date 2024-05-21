@@ -2,6 +2,7 @@ import networkx as nx
 
 class Graphs():
     def __init__(self, path):
+        self.path = path
         self.graphs = []
         self.names = []
         # Crea un grafo por cada condición climática
@@ -52,20 +53,38 @@ class Graphs():
         _, distance = nx.floyd_warshall_predecessor_and_distance(graph)
         center = min(distance, key=lambda x: sum(distance[x].values()))
         return center
-
-    def modificar_grafo(self, ind, action, city1, city2, weights=None):
-        # Modifica el grafo añadiendo o eliminando conexiones
+    
+    def modificar_grafo(self, ind, action, c1, c2, clima=None, weights=None):
+        # Modifica el grafo según la acción especificada
         graph = self.graphs[ind]
-        if action == "remove":
-            # Elimina la arista entre las ciudades
-            if graph.has_edge(city1, city2):
-                graph.remove_edge(city1, city2)
-            if graph.has_edge(city2, city1):
-                graph.remove_edge(city2, city1)
-        elif action == "add" and weights:
-            # Añade una arista entre las ciudades
-            graph.add_edge(city1, city2, weight=weights[ind])
-            graph.add_edge(city2, city1, weight=weights[ind])
+        
+        if action == "interruption":
+            # Indica una interrupción de tráfico entre un par de ciudades
+            if graph.has_edge(c1, c2):
+                graph.remove_edge(c1, c2)
+            if graph.has_edge(c2, c1):
+                graph.remove_edge(c2, c1)
+        elif action == "new_connection" and weights:
+            # Establece una nueva conexión entre ciudad1 y ciudad2 con los tiempos especificados
+            graph.add_edge(c1, c2, weight=weights[0])
+            graph.add_edge(c2, c1, weight=weights[0])
+        elif action == "weather" and clima:
+            # Indica el clima entre un par de ciudades
+            if graph.has_edge(c1, c2):
+                graph[c1][c2]['weather'] = clima
+            if graph.has_edge(c2, c1):
+                graph[c2][c1]['weather'] = clima
+
+        # Actualizar el archivo después de la modificación
+        self.archivo()
+
+    def archivo(self):
+        # Escribir los datos del grafo en el archivo
+        with open("logistica.txt", 'w') as file:  # Modificar para sobrescribir
+            for graph in self.graphs:
+                for edge in graph.edges():
+                    weight_list = [str(graph[edge[0]][edge[1]]['weight']) for _ in range(4)]
+                    file.write(f"{edge[0]} {edge[1]} {' '.join(weight_list)}\n")
 
 class App():
     def __init__(self):
@@ -75,6 +94,7 @@ class App():
     def run(self):
         while True:
             # Menú
+            print("\nMENU DE OPCIONES:")
             print("1. Calcular ruta más corta")
             print("2. Calcular centro del grafo")
             print("3. Modificar el grafo")
@@ -94,27 +114,40 @@ class App():
 
     def ruta(self):
         try:
-            # Pide al usuario que seleccione el índice del clima, las ciudades de origen y destino
-            ind = int(input("Seleccione el índice del clima (0-3): "))
-            if ind < 0 or ind > 3:
-                raise ValueError("El índice del clima debe estar entre 0 y 3.")
+            # Pide al usuario que seleccione el clima
+            print("\nOPCIONES DE CLIMA:")
+            print("0) Con clima normal")
+            print("1) Con lluvia")
+            print("2) Con nieve")
+            print("3) Con tormenta")
+            clima_option = input("Seleccione una opción de clima (0, 1, 2, 3): ")
+
+            if clima_option not in ['0', '1', '2', '3']:
+                raise ValueError("Opción de clima no válida.")
+
+            clima_index = int(clima_option)
+
             while True:
+                # Pide al usuario las ciudades de origen y destino
                 c1 = input("Ingrese la ciudad de origen: ")
-                if c1 not in self.Graphs.graphs[ind]:
+                if c1 not in self.Graphs.graphs[clima_index]:
                     print(f"La ciudad '{c1}' no se encuentra en la base de datos. Por favor, intente de nuevo.")
                     continue
                 c2 = input("Ingrese la ciudad de destino: ")
-                if c2 not in self.Graphs.graphs[ind]:
+                if c2 not in self.Graphs.graphs[clima_index]:
                     print(f"La ciudad '{c2}' no se encuentra en la base de datos. Por favor, intente de nuevo.")
                     continue
                 break
-            path, length = self.Graphs.ruta_mas_corta(ind, c1, c2)
+
+            path, length = self.Graphs.ruta_mas_corta(clima_index, c1, c2)
             if path:
-                print(f"Ruta más corta: {' -> '.join(path)} con una distancia de {length}")
+                print(f"Ruta más corta de {c1} a {c2}:")
+                print(" -> ".join(path))
+                print(f"Distancia: {length}")
             else:
                 print("No existe una ruta entre las ciudades seleccionadas.")
         except ValueError as e:
-            print(f"Error: {e}. Verifique los nombres de las ciudades y el índice del clima.")
+            print(f"Error: {e}. Verifique los nombres de las ciudades y la opción de clima.")
         except Exception as e:
             print(f"Error inesperado: {e}")
 
@@ -133,37 +166,37 @@ class App():
 
     def modificacion(self):
         try:
-            # Pide al usuario que seleccione el índice del clima y la acción a realizar (añadir o eliminar conexión)
+            # Pide al usuario la acción a realizar y los detalles correspondientes
             ind = int(input("Seleccione el índice del clima (0-3): "))
             if ind < 0 or ind > 3:
-                raise ValueError("El índice del clima debe estar en el rango indicado.")
-            action = int(input("¿Desea 'añadir(0)' o 'eliminar(1)' una conexión? "))
-            while True:
-                c1 = input("Ingrese la ciudad de origen: ")
-                if c1 not in self.Graphs.graphs[ind]:
-                    print(f"La ciudad '{c1}' no se encuentra en la base de datos. Por favor, intente de nuevo.")
-                    continue
-                c2 = input("Ingrese la ciudad de destino: ")
-                if c2 not in self.Graphs.graphs[ind]:
-                    print(f"La ciudad '{c2}' no se encuentra en la base de datos. Por favor, intente de nuevo.")
-                    continue
-                break
-            if action == 0:
-                # Pide los tiempos para cada condición climática
-                weights = [float(input(f"Ingrese el tiempo para el clima {i}: ")) for i in range(4)]
-                self.Graphs.modificar_grafo(ind, "add", c1, c2, weights)
-            elif action == 1:
-                self.Graphs.modificar_grafo(ind, "remove", c1, c2)
-            else:
-                print("Acción no válida.")
+                raise ValueError("El índice del clima debe estar entre 0 y 3.")
 
-            print("Conexión modificada.")
+            print("\nOPCIONES DE MODIFICACIÓN:")
+            print("1. Interrupción de tráfico entre ciudades")
+            print("2. Establecer nueva conexión entre ciudades")
+            print("3. Indicar clima entre ciudades")
+            action = input("Seleccione una opción de modificación: ")
+
+            if action == "1":
+                c1 = input("Ingrese la primera ciudad: ")
+                c2 = input("Ingrese la segunda ciudad: ")
+                self.Graphs.modificar_grafo(ind, "interruption", c1, c2)
+            elif action == "2":
+                c1 = input("Ingrese la primera ciudad: ")
+                c2 = input("Ingrese la segunda ciudad: ")
+                weight = float(input("Ingrese el tiempo de la nueva conexión: "))
+                self.Graphs.modificar_grafo(ind, "new_connection", c1, c2, weights=[weight])
+            elif action == "3":
+                c1 = input("Ingrese la primera ciudad: ")
+                c2 = input("Ingrese la segunda ciudad: ")
+                clima = input("Ingrese el clima (normal, lluvia, nieve o tormenta): ")
+                self.Graphs.modificar_grafo(ind, "weather", c1, c2, clima=clima)
+            else:
+                print("Opción no válida.")
         except ValueError as e:
-            print(f"Error: {e}. Verifique los nombres de las ciudades y el índice del clima.")
-        except KeyError as e:
-            print(f"Error: Ciudad no encontrada. Verifique los nombres de las ciudades.")
+            print(f"Error: {e}.")
         except Exception as e:
-            print(f"Error inesperado: {e}")
-            
+            print(f"Error: {e}")
+
 if __name__ == "__main__":
-    App()  # Inicia la aplicación
+    App()
