@@ -1,3 +1,13 @@
+#######################################################
+#                                                     #
+#           Proyecto Matemática Discreta              #
+#       Calculadora de ecuaciones diofánticas         #
+#           Nombre: Martín Pérez Betancourt           #
+#                   Carnet: 23234                     #
+#                                                     #
+#######################################################
+
+
 class app():
 
     def mcd(self,a,b):
@@ -51,4 +61,5 @@ class app():
 
         else:
             print("la ecuación no tiene solución")
+
 app()
