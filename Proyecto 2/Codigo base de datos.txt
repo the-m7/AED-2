@@ -1,19 +1,49 @@
-CREATE (p1:Person {name: "Persona 1", age: 24}),
-(p2:Person {name: "Persona 2", age: 22}),
-(gf:Gender {name: "Female"}),
-(gm:Gender {name: "Male"}),
-(i1:Interest {name: "Deportes"}),
-(i2:Interest {name: "Artes"}),
-(c1:Charac {name: "Tímida"}),
-(c2:Charac {name: "Inteligente"}),
-(p1)-[:IDENTIFIES]->(gf),
-(p2)-[:IDENTIFIES]->(gm),
-(p1)-[:WANTS]->(gm),
-(p2)-[:WANTS]->(gf),
-(p2)-[:LIKES]->(i1),
-(p2)-[:LIKES]->(i2),
-(p1)-[:LIKES]->(i2),
-(p1)-[:IS]->(c1),
-(p1)-[:IS]->(c2),
-(p2)-[:IS]->(c2)
-RETURN p1,p2,gf,gm,i1,i2,c1,c2
+// Crear nodos y relaciones
+CREATE (p1:Person {name: "Ana", age: 24}),
+       (p2:Person {name: "Luis", age: 22}),
+       (p3:Person {name: "María", age: 30}),
+       (p4:Person {name: "Carlos", age: 28}),
+       (p5:Person {name: "Laura", age: 26}),
+       (gf:Gender {name: "Female"}),
+       (gm:Gender {name: "Male"}),
+       (i1:Interest {name: "Deportes"}),
+       (i2:Interest {name: "Artes"}),
+       (i3:Interest {name: "Música"}),
+       (c1:Charac {name: "Tímida"}),
+       (c2:Charac {name: "Inteligente"}),
+       (c3:Charac {name: "Aventurera"}),
+
+       // Relaciones para Ana
+       (p1)-[:IDENTIFIES]->(gf),
+       (p1)-[:WANTS]->(gm),
+       (p1)-[:LIKES]->(i2),
+       (p1)-[:IS]->(c1),
+       (p1)-[:IS]->(c2),
+
+       // Relaciones para Luis
+       (p2)-[:IDENTIFIES]->(gm),
+       (p2)-[:WANTS]->(gf),
+       (p2)-[:LIKES]->(i1),
+       (p2)-[:LIKES]->(i2),
+       (p2)-[:IS]->(c2),
+
+       // Relaciones para María
+       (p3)-[:IDENTIFIES]->(gf),
+       (p3)-[:WANTS]->(gm),
+       (p3)-[:LIKES]->(i3),
+       (p3)-[:IS]->(c3),
+
+       // Relaciones para Carlos
+       (p4)-[:IDENTIFIES]->(gm),
+       (p4)-[:WANTS]->(gf),
+       (p4)-[:LIKES]->(i1),
+       (p4)-[:IS]->(c1),
+
+       // Relaciones para Laura
+       (p5)-[:IDENTIFIES]->(gf),
+       (p5)-[:WANTS]->(gm),
+       (p5)-[:LIKES]->(i1),
+       (p5)-[:LIKES]->(i3),
+       (p5)-[:IS]->(c2),
+       (p5)-[:IS]->(c3)
+RETURN *;
