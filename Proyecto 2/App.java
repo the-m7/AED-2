@@ -62,6 +62,8 @@ public class App {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        in.close();
     }
 
 }
