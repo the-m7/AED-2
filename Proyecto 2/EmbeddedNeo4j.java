@@ -6,6 +6,7 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 import org.neo4j.driver.TransactionWork;
+import org.neo4j.driver.Values;
 import org.neo4j.driver.summary.ResultSummary;
 
 import static org.neo4j.driver.Values.parameters;
@@ -64,6 +65,30 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
+    public LinkedList<String> getCompatibleUsers(String userName) {
+        try (Session session = driver.session()) {
+
+            LinkedList<String> compatibleUsers = session.readTransaction(new TransactionWork<LinkedList<String>>() {
+                @Override
+                public LinkedList<String> execute(Transaction tx) {
+                    Result result = tx
+                            .run("MATCH (p1:Person {name:\"" + userName + "\"})-[:IDENTIFIES]->(genderP1:Gender), " +
+                                    "(p2:Person)-[:WANTS]->(genderP1), " +
+                                    "(p2)-[:IDENTIFIES]->(genderP2:Gender), " +
+                                    "(p1)-[:WANTS]->(genderP2) " +
+                                    "RETURN p2.name");
+                    LinkedList<String> myusers = new LinkedList<String>();
+                    List<Record> registros = result.list();
+                    for (int i = 0; i < registros.size(); i++) {
+                        myusers.add(registros.get(i).get("p2.name").asString());
+                    }
+                    return myusers;
+                }
+            });
+            return compatibleUsers;
+        }
+    }
+
     public LinkedList<String> getUsersByInterest(String interst) {
         try (Session session = driver.session()) {
 
@@ -74,7 +99,7 @@ public class EmbeddedNeo4j implements AutoCloseable {
                             + "\"})<-[:LIKES]-(people:Person) RETURN people.name;");
                     LinkedList<String> myusers = new LinkedList<String>();
                     List<Record> registros = result.list();
-                    for (int i = 0; i < registros.size() / 2; i++) {
+                    for (int i = 0; i < registros.size(); i++) {
                         myusers.add(registros.get(i).get("people.name").asString());
                     }
                     return myusers;

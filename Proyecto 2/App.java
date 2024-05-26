@@ -26,8 +26,24 @@ public class App {
             e.printStackTrace();
         }
 
-        System.out.println("Ingrese un interes:");
+        System.out.println("Ingrese su nombre:");
         Scanner in = new Scanner(System.in);
+        String myUser = in.nextLine();
+
+        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
+            LinkedList<String> compatibleUsers = db.getCompatibleUsers(myUser);
+
+            for (int i = 0; i < compatibleUsers.size(); i++) {
+                System.out.println(compatibleUsers.get(i));
+
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println("Ingrese un interes:");
         String myInterest = in.nextLine();
 
         try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
