@@ -32,9 +32,9 @@ public class App {
         System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
         System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
         System.out.println("                           inicio de sesión:");
-        System.out.println("¿Ya tiene una cuenta?");
+        System.out.println("¿Ya tiene una cuenta? (si/no)");
 
-        String opc = in.nextLine();
+        String opc = in.nextLine().toLowerCase();
 
         switch (opc.toLowerCase()) {
             case "si":
