@@ -6,6 +6,7 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 import org.neo4j.driver.TransactionWork;
+import org.neo4j.driver.Value;
 import org.neo4j.driver.Values;
 
 import static org.neo4j.driver.Values.parameters;
@@ -110,6 +111,8 @@ public class EmbeddedNeo4j implements AutoCloseable {
     public LinkedList<CompatibleUser> getCompatibleUsersWithSharedCounts(String userName) {
         try (Session session = driver.session()) {
 
+            UserProfile userProfile = getUserProfile(userName);
+
             LinkedList<CompatibleUser> compatibleUsers = session
                     .readTransaction(new TransactionWork<LinkedList<CompatibleUser>>() {
                         @Override
@@ -137,15 +140,80 @@ public class EmbeddedNeo4j implements AutoCloseable {
                             LinkedList<CompatibleUser> myUsers = new LinkedList<>();
                             List<Record> records = result.list();
                             for (Record record : records) {
+                                String compatibleUserName = record.get("CompatibleUser").asString();
+                                int sharedInterestsCount = record.get("SharedInterestsCount").asInt();
+                                int sharedCharacteristicsCount = record.get("SharedCharacteristicsCount").asInt();
+
+                                UserProfile compatibleUserProfile = getUserProfile(compatibleUserName);
+
                                 myUsers.add(new CompatibleUser(
-                                        record.get("CompatibleUser").asString(),
-                                        record.get("SharedInterestsCount").asInt(),
-                                        record.get("SharedCharacteristicsCount").asInt()));
+                                        compatibleUserName,
+                                        sharedInterestsCount,
+                                        sharedCharacteristicsCount,
+                                        compatibleUserProfile));
                             }
                             return myUsers;
                         }
                     });
             return compatibleUsers;
+        }
+    }
+
+    public UserProfile getUserProfile(String userName) {
+        try (Session session = driver.session()) {
+
+            UserProfile userProfile = session.readTransaction(new TransactionWork<UserProfile>() {
+                @Override
+                public UserProfile execute(Transaction tx) {
+                    Result result = tx.run(
+                            "MATCH (user:Person {name: $userName})-[:LIVES]->(userRegion:Reg), " +
+                                    "(user)-[:IDENTIFIES]->(userGender:Gender) " +
+                                    "OPTIONAL MATCH (user)-[:LIKES]->(interest:Interest) " +
+                                    "OPTIONAL MATCH (user)-[:IS]->(characteristic:Charac) " +
+                                    "RETURN user.age AS age, " +
+                                    "userRegion.name AS region, " +
+                                    "collect(DISTINCT interest.name) AS interests, " +
+                                    "collect(DISTINCT characteristic.name) AS characteristics",
+                            Values.parameters("userName", userName));
+
+                    if (result.hasNext()) {
+                        Record record = result.next();
+                        int age = record.get("age").asInt();
+                        String region = record.get("region").asString();
+                        List<String> interests = record.get("interests").asList(Value::asString);
+                        List<String> characteristics = record.get("characteristics").asList(Value::asString);
+
+                        return new UserProfile(userName, age, region, interests, characteristics);
+                    } else {
+                        return null;
+                    }
+                }
+            });
+            return userProfile;
+        }
+    }
+
+    public void printCompatibleUsers(String userName) {
+        LinkedList<CompatibleUser> compatibleUsers = getCompatibleUsersWithSharedCounts(userName);
+
+        for (CompatibleUser compatibleUser : compatibleUsers) {
+            System.out.println(compatibleUser.getName().toUpperCase() + " <3");
+            System.out.println("Cantidad de intereses compartidos: " + compatibleUser.getSharedInterestsCount());
+            System.out.println(
+                    "Cantidad de características compartidas: " + compatibleUser.getSharedCharacteristicsCount());
+
+            UserProfile profile = compatibleUser.getUserProfile();
+            if (profile != null) {
+                System.out.println("  Edad: " + profile.getAge());
+                System.out.println("  Región: " + profile.getRegion());
+                System.out.println("  Intereses: " + String.join(", ", profile.getInterests()));
+                System.out.println("  Características: " + String.join(", ", profile.getCharacteristics()));
+                System.out.println("<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3");
+            } else {
+                System.out.println("Profile information not available.");
+            }
+
+            System.out.println();
         }
     }
 
