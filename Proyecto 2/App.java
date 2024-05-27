@@ -1,98 +1,92 @@
-
-/**
- * 
- */
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-
         // Connexión a la base en Sandbox
-        String username = "neo4j";
-        String password = "technology-secretary-repair";
+        String username_ = "neo4j";
+        String password_ = "technology-secretary-repair";
         String boltURL = "bolt://3.84.219.222";
 
-        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
-            LinkedList<String> myusers = db.getUsers();
-
-            for (int i = 0; i < myusers.size(); i++) {
-                System.out.println(myusers.get(i));
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        System.out.println("Ingrese su nombre:");
         Scanner in = new Scanner(System.in);
-        String myUser = in.nextLine();
 
-        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
-            LinkedList<String> compatibleUsers = db.getCompatibleUsers(myUser);
+        boolean isLoggedIn = false;
 
-            for (int i = 0; i < compatibleUsers.size(); i++) {
-                System.out.println(compatibleUsers.get(i));
-
+        while (true) {
+            if (isLoggedIn) {
+                mostrarMenuPrincipal(in, boltURL, username_, password_);
+            } else {
+                isLoggedIn = mostrarMenuInicioSesion(in);
             }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
-
-        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
-            LinkedList<CompatibleUser> compatibleUsers = db.getCompatibleUsersWithSharedCounts(myUser);
-
-            for (int i = 0; i < compatibleUsers.size(); i++) {
-                System.out.println(compatibleUsers.get(i));
-                System.out.println("aaaaaaaaaaaa");
-
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        System.out.println("Ingrese un interes:");
-        String myInterest = in.nextLine();
-
-        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
-            LinkedList<String> users = db.getUsersByInterest(myInterest);
-
-            for (int i = 0; i < users.size(); i++) {
-                System.out.println(users.get(i));
-
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        System.out.println("Ingrese una nueva Pelicula");
-        System.out.println("Ingrese Nombre de la pelicula");
-        String movieTitle = in.nextLine();
-        System.out.println("Ingrese A�o Lanzamiento");
-        int movieReleaseYear = Integer.parseInt(in.nextLine());
-        System.out.println("Ingrese Descripcion");
-        String movieTagLine = in.nextLine();
-
-        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
-            String result = db.insertUser(movieTitle, movieReleaseYear, movieTagLine);
-
-            if (result.equalsIgnoreCase("OK")) {
-                System.out.println("Pelicula insertada correctamente");
-            }
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        in.close();
     }
 
+    public static boolean mostrarMenuInicioSesion(Scanner in) {
+        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
+        System.out.println("        C O M P A T I B I L I D A D   A M O R O S A         ");
+        System.out.println("¿Ya tiene una cuenta?");
+
+        String opc = in.nextLine();
+
+        switch (opc.toLowerCase()) {
+            case "si":
+                // inicia sesión
+                return true;
+            case "no":
+                // crea una cuenta
+                return false;
+            default:
+                System.out.println("Opción no válida");
+                return false;
+        }
+    }
+
+    public static void mostrarMenuPrincipal(Scanner in, String boltURL, String username, String password) {
+        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
+        System.out.println("        C O M P A T I B I L I D A D   A M O R O S A         ");
+        System.out.println("                     menu de opciones:");
+        System.out.println("\n 1. Encontrar usuarios con alta compatibilidad.");
+        System.out.println(" 2. Ver mis 'MATCH'.");
+        System.out.println(" 3. Actualizar datos sobre mi cuenta.");
+        System.out.println(" 4. Cerrar sesión.");
+        System.out.println(" 5. Salir.");
+
+        int opc = in.nextInt();
+        in.nextLine(); // Consume newline character
+
+        switch (opc) {
+            case 1:
+                System.out.println("Ingrese su nombre:");
+                String myUser = in.nextLine();
+
+                try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
+                    LinkedList<CompatibleUser> compatibleUsers = db.getCompatibleUsersWithSharedCounts(myUser);
+
+                    for (CompatibleUser user : compatibleUsers) {
+                        System.out.println(user);
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+                break;
+
+            case 2:
+                // MATCH
+                break;
+            case 3:
+                // ACTUALIZAR DATOS
+                break;
+            case 4:
+                // CERRAR SESIÓN
+                break;
+            case 5:
+                // SALIR
+                break;
+
+            default:
+                System.out.println("Opción no válida");
+                break;
+        }
+    }
 }

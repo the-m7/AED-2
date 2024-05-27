@@ -7,7 +7,6 @@ import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 import org.neo4j.driver.TransactionWork;
 import org.neo4j.driver.Values;
-import org.neo4j.driver.summary.ResultSummary;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -150,25 +149,22 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
-    public String insertUser(String name, int age, String tagline) {
+    public String insertUser(String name, int age, String user, String password) {
         try (Session session = driver.session()) {
-
             String result = session.writeTransaction(new TransactionWork<String>() {
                 @Override
                 public String execute(Transaction tx) {
-                    tx.run("CREATE (Test:Movie {title:'" + name + "', released:" + age + ", tagline:'"
-                            + tagline + "'})");
-
+                    tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
+                            + password + "'})");
                     return "OK";
+
+                    // AGREGUAR PREGUNTAS PARA LAS RELACIONES
+
                 }
-            }
-
-            );
-
+            });
             return result;
         } catch (Exception e) {
             return e.getMessage();
         }
     }
-
 }
