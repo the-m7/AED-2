@@ -14,44 +14,56 @@ public class App {
 
         boolean isLoggedIn = false;
 
+        String nombre_usuario = null;
+
         while (true) {
-            if (isLoggedIn) {
-                mostrarMenuPrincipal(in, embeddedNeo4j);
+            if (isLoggedIn == true) {
+                mostrarMenuPrincipal(in, embeddedNeo4j, nombre_usuario, isLoggedIn);
             } else {
-                mostrarMenuInicioSesion(in, embeddedNeo4j);
+                nombre_usuario = mostrarMenuInicioSesion(in, embeddedNeo4j);
+                if (nombre_usuario != null) {
+                    isLoggedIn = true;
+                }
             }
         }
     }
 
-    public static boolean mostrarMenuInicioSesion(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
+    public static String mostrarMenuInicioSesion(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
         System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
         System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
+        System.out.println("                           inicio de sesión:");
         System.out.println("¿Ya tiene una cuenta?");
 
         String opc = in.nextLine();
 
         switch (opc.toLowerCase()) {
             case "si":
+                // inicio de sesión
                 System.out.println("Ingrese su nombre de usuario:");
                 String username = in.nextLine();
                 System.out.println("Ingrese su contraseña:");
                 String password = in.nextLine();
 
-                embeddedNeo4j.iniciarSesion(username, password);
-
-                return true;
+                String nombre_usuario = embeddedNeo4j.iniciarSesion(username, password);
+                if (nombre_usuario != null) {
+                    System.out.println("\nHola " + nombre_usuario + "!");
+                }
+                username = null;
+                password = null;
+                return nombre_usuario;
             case "no":
                 // crea una cuenta
                 embeddedNeo4j.insertUser(in);
                 System.out.println("Cuenta creada.");
-                return false;
+                return null;
             default:
                 System.out.println("Opción no válida");
-                return false;
+                return null;
         }
     }
 
-    public static void mostrarMenuPrincipal(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
+    public static void mostrarMenuPrincipal(Scanner in, EmbeddedNeo4j embeddedNeo4j, String nombre_usuario,
+            boolean isLoggedIn) {
         System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
         System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
         System.out.println("                             menu de opciones:");
@@ -66,11 +78,9 @@ public class App {
         switch (opc) {
             case "1":
                 // pedir el nombre no debería ser necesario con el inicio de sesión
-                System.out.println("Ingrese su nombre:");
-                String myUser = in.nextLine();
                 System.out.println("Tienes una alta compatibilidad con:");
                 System.out.println();
-                embeddedNeo4j.printCompatibleUsers(myUser);
+                embeddedNeo4j.printCompatibleUsers(nombre_usuario);
                 System.out.println("* Automáticamente se filtraron personas en tu región y en tu rango de edad.");
                 break;
 
@@ -79,13 +89,12 @@ public class App {
                 break;
 
             case "3":
+
                 // ACTUALIZAR DATOS
                 while (true) {
-                    System.out.println("Ingrese su nombre:");
-                    String myProfile = in.nextLine();
 
                     System.out.println("Tus datos:");
-                    UserProfile yo = embeddedNeo4j.getUserProfile(myProfile);
+                    UserProfile yo = embeddedNeo4j.getUserProfile(nombre_usuario);
                     System.out.println(yo);
 
                     System.out.println("Menu de modificación de datos:");
