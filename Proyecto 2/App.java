@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
-
     public static void main(String[] args) {
 
         // Connexión a la base en Sandbox
@@ -35,6 +34,20 @@ public class App {
 
             for (int i = 0; i < compatibleUsers.size(); i++) {
                 System.out.println(compatibleUsers.get(i));
+
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try (EmbeddedNeo4j db = new EmbeddedNeo4j(boltURL, username, password)) {
+            LinkedList<CompatibleUser> compatibleUsers = db.getCompatibleUsersWithSharedCounts(myUser);
+
+            for (int i = 0; i < compatibleUsers.size(); i++) {
+                System.out.println(compatibleUsers.get(i));
+                System.out.println("aaaaaaaaaaaa");
 
             }
 

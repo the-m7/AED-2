@@ -60,7 +60,6 @@ public class EmbeddedNeo4j implements AutoCloseable {
                     return myusers;
                 }
             });
-
             return users;
         }
     }
@@ -109,12 +108,52 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
+    public LinkedList<CompatibleUser> getCompatibleUsersWithSharedCounts(String userName) {
+        try (Session session = driver.session()) {
+
+            LinkedList<CompatibleUser> compatibleUsers = session
+                    .readTransaction(new TransactionWork<LinkedList<CompatibleUser>>() {
+                        @Override
+                        public LinkedList<CompatibleUser> execute(Transaction tx) {
+                            Result result = tx.run(
+                                    "MATCH (user:Person {name: $userName})-[:IDENTIFIES]->(userGender:Gender), " +
+                                            "(user)-[:LIVES]->(userRegion:Reg), " +
+                                            "(potentialMatch:Person)-[:WANTS]->(userGender), " +
+                                            "(potentialMatch)-[:LIVES]->(potentialMatchRegion:Reg), " +
+                                            "(potentialMatch)-[:IDENTIFIES]->(potentialMatchGender:Gender), " +
+                                            "(user)-[:WANTS]->(potentialMatchGender) " +
+                                            "WHERE abs(user.age - potentialMatch.age) <= 3 " +
+                                            "AND userRegion = potentialMatchRegion " +
+                                            "WITH user, potentialMatch " +
+                                            "OPTIONAL MATCH (user)-[:LIKES]->(sharedInterest:Interest)<-[:LIKES]-(potentialMatch) "
+                                            +
+                                            "OPTIONAL MATCH (user)-[:IS]->(sharedCharacteristic:Charac)<-[:IS]-(potentialMatch) "
+                                            +
+                                            "RETURN potentialMatch.name AS CompatibleUser, " +
+                                            "count(DISTINCT sharedInterest) AS SharedInterestsCount, " +
+                                            "count(DISTINCT sharedCharacteristic) AS SharedCharacteristicsCount " +
+                                            "ORDER BY SharedInterestsCount + SharedCharacteristicsCount DESC",
+                                    Values.parameters("userName", userName));
+
+                            LinkedList<CompatibleUser> myUsers = new LinkedList<>();
+                            List<Record> records = result.list();
+                            for (Record record : records) {
+                                myUsers.add(new CompatibleUser(
+                                        record.get("CompatibleUser").asString(),
+                                        record.get("SharedInterestsCount").asInt(),
+                                        record.get("SharedCharacteristicsCount").asInt()));
+                            }
+                            return myUsers;
+                        }
+                    });
+            return compatibleUsers;
+        }
+    }
+
     public String insertUser(String name, int age, String tagline) {
         try (Session session = driver.session()) {
 
-            String result = session.writeTransaction(new TransactionWork<String>()
-
-            {
+            String result = session.writeTransaction(new TransactionWork<String>() {
                 @Override
                 public String execute(Transaction tx) {
                     tx.run("CREATE (Test:Movie {title:'" + name + "', released:" + age + ", tagline:'"
