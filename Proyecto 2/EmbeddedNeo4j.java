@@ -260,4 +260,27 @@ public class EmbeddedNeo4j implements AutoCloseable {
             return e.getMessage();
         }
     }
+
+    // todavia no funciona
+    public String iniciarSesion(String username, String password) {
+        try (Session session = driver.session()) {
+            Result result = session.readTransaction(new TransactionWork<Result>() {
+                @Override
+                public Result execute(Transaction tx) {
+                    return tx.run("MATCH (p:Person {user: $username, password: $password}) RETURN p.name",
+                            Values.parameters("username", username, "password", password));
+                }
+            });
+
+            if (result.hasNext()) {
+                Record record = result.single();
+                return record.get("p.name").asString();
+            } else {
+                return null; // Si no se encuentra ninguna coincidencia, devolvemos null
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // En caso de error, también devolvemos null
+        }
+    }
 }

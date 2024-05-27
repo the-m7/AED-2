@@ -18,7 +18,7 @@ public class App {
             if (isLoggedIn) {
                 mostrarMenuPrincipal(in, embeddedNeo4j);
             } else {
-                isLoggedIn = mostrarMenuInicioSesion(in, embeddedNeo4j);
+                mostrarMenuInicioSesion(in, embeddedNeo4j);
             }
         }
     }
@@ -32,7 +32,13 @@ public class App {
 
         switch (opc.toLowerCase()) {
             case "si":
-                // inicia sesión
+                System.out.println("Ingrese su nombre de usuario:");
+                String username = in.nextLine();
+                System.out.println("Ingrese su contraseña:");
+                String password = in.nextLine();
+
+                embeddedNeo4j.iniciarSesion(username, password);
+
                 return true;
             case "no":
                 // crea una cuenta
