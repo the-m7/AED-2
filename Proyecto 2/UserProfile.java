@@ -55,4 +55,12 @@ public class UserProfile {
     public void setCharacteristics(List<String> characteristics) {
         this.characteristics = characteristics;
     }
+
+    public String toString() {
+        return "  Nombre: " + getName()
+                + "\n  Edad: " + getAge()
+                + "\n  Región: " + getRegion()
+                + "\n  Intereses: " + getInterests()
+                + "\n  Características: " + getCharacteristics();
+    }
 }

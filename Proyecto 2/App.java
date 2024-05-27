@@ -18,14 +18,14 @@ public class App {
             if (isLoggedIn) {
                 mostrarMenuPrincipal(in, embeddedNeo4j);
             } else {
-                isLoggedIn = mostrarMenuInicioSesion(in);
+                isLoggedIn = mostrarMenuInicioSesion(in, embeddedNeo4j);
             }
         }
     }
 
-    public static boolean mostrarMenuInicioSesion(Scanner in) {
-        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
-        System.out.println("        C O M P A T I B I L I D A D   A M O R O S A         ");
+    public static boolean mostrarMenuInicioSesion(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
+        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
+        System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
         System.out.println("¿Ya tiene una cuenta?");
 
         String opc = in.nextLine();
@@ -36,6 +36,8 @@ public class App {
                 return true;
             case "no":
                 // crea una cuenta
+                embeddedNeo4j.insertUser(in);
+                System.out.println("Cuenta creada.");
                 return false;
             default:
                 System.out.println("Opción no válida");
@@ -44,45 +46,87 @@ public class App {
     }
 
     public static void mostrarMenuPrincipal(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
-        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
-        System.out.println("        C O M P A T I B I L I D A D   A M O R O S A         ");
-        System.out.println("                     menu de opciones:");
+        System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
+        System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
+        System.out.println("                             menu de opciones:");
         System.out.println("\n 1. Encontrar usuarios con mejor compatibilidad.");
         System.out.println(" 2. Ver mis 'MATCH'.");
         System.out.println(" 3. Actualizar datos sobre mi cuenta.");
         System.out.println(" 4. Cerrar sesión.");
         System.out.println(" 5. Salir.");
 
-        int opc = in.nextInt();
-        in.nextLine();
+        String opc = in.nextLine();
 
         switch (opc) {
-            case 1:
+            case "1":
                 // pedir el nombre no debería ser necesario con el inicio de sesión
                 System.out.println("Ingrese su nombre:");
                 String myUser = in.nextLine();
                 System.out.println("Tienes una alta compatibilidad con:");
                 System.out.println();
                 embeddedNeo4j.printCompatibleUsers(myUser);
+                System.out.println("* Automáticamente se filtraron personas en tu región y en tu rango de edad.");
                 break;
 
-            case 2:
+            case "2":
                 // MATCH
                 break;
-            case 3:
+
+            case "3":
                 // ACTUALIZAR DATOS
-                break;
-            case 4:
+                while (true) {
+                    System.out.println("Ingrese su nombre:");
+                    String myProfile = in.nextLine();
+
+                    System.out.println("Tus datos:");
+                    UserProfile yo = embeddedNeo4j.getUserProfile(myProfile);
+                    System.out.println(yo);
+
+                    System.out.println("Menu de modificación de datos:");
+                    System.out.println("1. Cambiar mi edad.");
+                    System.out.println("2. Cambiar la región a la que pertenezco.");
+                    System.out.println("3. Añadir/Eliminar un interés.");
+                    System.out.println("4. Añadir/Eliminar una característica.");
+                    System.out.println("5. Regresar al menú anterior.");
+
+                    String opc_3 = in.nextLine();
+
+                    switch (opc_3) {
+                        case "1":
+                            // Cambiar edad
+                            break;
+
+                        case "2":
+                            // Cambiar región
+                            break;
+
+                        case "3":
+                            // Añadir/Eliminar interés
+                            break;
+
+                        case "4":
+                            // Añadir/Eliminar característica
+                            break;
+
+                        case "5":
+                            // Regresar al menú anterior
+                            return;
+
+                        default:
+                            System.out.println("Opción no válida");
+                    }
+                }
+
+            case "4":
                 // CERRAR SESIÓN
                 break;
-            case 5:
+
+            case "5":
                 // SALIR
                 break;
 
             default:
                 System.out.println("Opción no válida");
-                break;
         }
     }
-
 }

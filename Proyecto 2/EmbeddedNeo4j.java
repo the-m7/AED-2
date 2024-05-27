@@ -13,6 +13,7 @@ import static org.neo4j.driver.Values.parameters;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class EmbeddedNeo4j implements AutoCloseable {
 
@@ -208,25 +209,49 @@ public class EmbeddedNeo4j implements AutoCloseable {
                 System.out.println("  Región: " + profile.getRegion());
                 System.out.println("  Intereses: " + String.join(", ", profile.getInterests()));
                 System.out.println("  Características: " + String.join(", ", profile.getCharacteristics()));
-                System.out.println("<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3");
+                System.out.println("<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3");
             } else {
-                System.out.println("Profile information not available.");
+                System.out.println("Infromación del perfil no disponible.");
             }
 
             System.out.println();
         }
     }
 
-    public String insertUser(String name, int age, String user, String password) {
+    public String insertUser(Scanner scanner) {
         try (Session session = driver.session()) {
             String result = session.writeTransaction(new TransactionWork<String>() {
+
                 @Override
                 public String execute(Transaction tx) {
+                    System.out.println("Ingrese su nombre de usuario:");
+                    String user = scanner.nextLine();
+                    System.out.println("Ingrese su contraseña:");
+                    String password = scanner.nextLine();
+
+                    System.out.println("Ingrese su nombre:");
+                    String name = scanner.nextLine();
+
+                    System.out.println("Ingrese su edad:");
+                    int age = Integer.parseInt(scanner.nextLine());
+
+                    // AGREGUAR PREGUNTAS PARA LAS RELACIONES
+
+                    System.out.println("Seleccione cómo se identifica (Mujer/Hombre):");
+                    String gender = scanner.nextLine();
+
+                    System.out.println("Seleccione el género que le atrae (Mujer/Hombre):");
+                    String attractedTo = scanner.nextLine();
+
+                    System.out
+                            .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
+                    String region = scanner.nextLine();
+
                     tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
                             + password + "'})");
                     return "OK";
 
-                    // AGREGUAR PREGUNTAS PARA LAS RELACIONES
+                    // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
 
                 }
             });
