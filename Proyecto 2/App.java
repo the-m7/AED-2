@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
-    
+
     public static void main(String[] args) {
         // Connexión a la base en Sandbox
         String username_ = "neo4j";
@@ -22,11 +22,11 @@ public class App {
         while (bmenu) {
             if (isLoggedIn == true) {
                 int nsel = mostrarMenuPrincipal(in, embeddedNeo4j, nombre_usuario, isLoggedIn);
-                if (nsel == -1){
+                if (nsel == -1) {
                     isLoggedIn = false;
-            
+
                     nombre_usuario = null;
-                } else if (nsel == -2){
+                } else if (nsel == -2) {
                     bmenu = false;
                     break;
                 }
@@ -141,7 +141,14 @@ public class App {
                             break;
 
                         case "2":
-                            // Cambiar región
+                            // Camniar región
+                            System.out.println("Ingrese su nueva región: ");
+                            try {
+                                int value = Integer.parseInt(in.nextLine());
+                                embeddedNeo4j.editUserRegion(embeddedNeo4j.region, value);
+                            } catch (Exception e) {
+
+                            }
                             break;
 
                         case "3":

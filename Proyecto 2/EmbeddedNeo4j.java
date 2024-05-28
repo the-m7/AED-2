@@ -293,9 +293,9 @@ public class EmbeddedNeo4j implements AutoCloseable {
 
                 @Override
                 public String execute(Transaction tx) {
-                    tx.run("MATCH (n:Person {name:'"+ username +"'})" +
-                           "SET n.age = " + value);
-                    
+                    tx.run("MATCH (n:Person {name:'" + username + "'})" +
+                            "SET n.age = " + value);
+
                     return "OK";
 
                     // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
@@ -308,6 +308,50 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
+    // Relación para región
+
+    public LinkedList<String> getRegion() {
+        try (Session session = driver.session()) {
+
+            LinkedList<String> region = session.readTransaction(new TransactionWork<LinkedList<String>>() {
+                @Override
+                public LinkedList<String> execute(Transaction tx) {
+                    // Result result = tx.run( "MATCH (people:Person) RETURN people.name");
+                    Result result = tx.run("MATCH (region:Region) RETURN people.region");
+                    LinkedList<String> myregion = new LinkedList<String>();
+                    List<Record> registros = result.list();
+                    for (int i = 0; i < registros.size(); i++) {
+                        myregion.add(registros.get(i).get("people.region").asString());
+                    }
+
+                    return myregion;
+                }
+            });
+            return region;
+        }
+    }
+
+    public LinkedList<String> getCompatibleRegion(String userRegion) {
+        try (Session session = driver.session()) {
+
+            LinkedList<String> compatibleRegion = session.readTransaction(new TransactionWork<LinkedList<String>>() {
+                @Override
+                public LinkedList<String> execute(Transaction tx) {
+                    Result result = tx
+                            .run("MATCH (p1:Person {region:\"" + userRegion + "\"})-[:LIVES]->(regionP1:REGION), " +
+                                    "(p2:Person)-[:LIVES]->(regionP1), " +
+                                    "RETURN p2.region");
+                    LinkedList<String> myregion = new LinkedList<String>();
+                    List<Record> registros = result.list();
+                    for (int i = 0; i < registros.size(); i++) {
+                        myusers.add(registros.get(i).get("p2.region").asString());
+                    }
+                    return myregion;
+                }
+            });
+            return compatibleRegion;
+        }
+    }
 
     public String iniciarSesion(String username, String password) {
         try (Session session = driver.session()) {
