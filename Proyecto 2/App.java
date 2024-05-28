@@ -71,8 +71,12 @@ public class App {
                 return nombre_usuario;
             case "no":
                 // crea una cuenta
-                embeddedNeo4j.insertUser(in);
-                System.out.println("Cuenta creada.");
+                String res = embeddedNeo4j.insertUser(in);
+                if(res == "OK"){
+                    System.out.println("Cuenta creada exitosamente.");
+                } else {
+                    System.out.println(res);
+                }
                 return null;
             default:
                 System.out.println("Opción no válida");

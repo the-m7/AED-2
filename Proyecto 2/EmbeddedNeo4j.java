@@ -238,20 +238,46 @@ public class EmbeddedNeo4j implements AutoCloseable {
                     // AGREGUAR PREGUNTAS PARA LAS RELACIONES
 
                     System.out.println("Seleccione cómo se identifica (Mujer/Hombre):");
-                    String gender = scanner.nextLine();
+                    String gender = scanner.nextLine().toLowerCase();
+
+                    if(gender == "mujer"){
+                        gender = "Female";
+                    } else if (gender == "hombre") {
+                        gender = "Male";
+                    } else {
+                        return "Error, género inválido";
+                    }
 
                     System.out.println("Seleccione el género que le atrae (Mujer/Hombre):");
                     String attractedTo = scanner.nextLine();
+
+                    if(attractedTo == "mujer"){
+                        attractedTo = "Female";
+                    } else if (attractedTo == "hombre") {
+                        attractedTo = "Male";
+                    } else {
+                        return "Error, género inválido";
+                    }
 
                     System.out
                             .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
                     String region = scanner.nextLine();
 
-                    tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
-                            + password + "'})");
-                    return "OK";
+                    if(region != "Sudamérica" && region != "América Central" && region != "el Caribe");
 
+                    tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
+                            + password + "'})" +
+                            "MATCH (g1:Gender {name:'"+ gender +"'})" +
+                            "CREATE (p)-[:IDENTIFIES]->(g1)" +
+                            "MATCH (g1:Gender {name:'"+ gender +"'})" +
+                            "CREATE (p)-[:WANTS]->(g1)"
+                            
+                            
+                            
+                            );
+                    return "OK";
                     // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
+
 
                 }
             });
