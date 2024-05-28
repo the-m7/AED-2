@@ -2,6 +2,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
+    
     public static void main(String[] args) {
         // Connexión a la base en Sandbox
         String username_ = "neo4j";
@@ -16,9 +17,19 @@ public class App {
 
         String nombre_usuario = null;
 
-        while (true) {
+        boolean bmenu = true;
+
+        while (bmenu) {
             if (isLoggedIn == true) {
-                mostrarMenuPrincipal(in, embeddedNeo4j, nombre_usuario, isLoggedIn);
+                int nsel = mostrarMenuPrincipal(in, embeddedNeo4j, nombre_usuario, isLoggedIn);
+                if (nsel == -1){
+                    isLoggedIn = false;
+            
+                    nombre_usuario = null;
+                } else if (nsel == -2){
+                    bmenu = false;
+                    break;
+                }
             } else {
                 nombre_usuario = mostrarMenuInicioSesion(in, embeddedNeo4j);
                 if (nombre_usuario != null) {
@@ -26,6 +37,13 @@ public class App {
                 }
             }
         }
+        try {
+            embeddedNeo4j.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("Saliendo del programa");
     }
 
     public static String mostrarMenuInicioSesion(Scanner in, EmbeddedNeo4j embeddedNeo4j) {
@@ -62,7 +80,7 @@ public class App {
         }
     }
 
-    public static void mostrarMenuPrincipal(Scanner in, EmbeddedNeo4j embeddedNeo4j, String nombre_usuario,
+    public static int mostrarMenuPrincipal(Scanner in, EmbeddedNeo4j embeddedNeo4j, String nombre_usuario,
             boolean isLoggedIn) {
         System.out.println("\n<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 ");
         System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
@@ -125,7 +143,7 @@ public class App {
 
                         case "5":
                             // Regresar al menú anterior
-                            return;
+                            return 0;
 
                         default:
                             System.out.println("Opción no válida");
@@ -134,14 +152,15 @@ public class App {
 
             case "4":
                 // CERRAR SESIÓN
-                break;
+                return -1;
 
             case "5":
                 // SALIR
-                break;
+                return -2;
 
             default:
                 System.out.println("Opción no válida");
         }
+        return 0;
     }
 }
