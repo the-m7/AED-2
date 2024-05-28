@@ -265,18 +265,23 @@ public class EmbeddedNeo4j implements AutoCloseable {
 
                     if(region != "Sudamérica" && region != "América Central" && region != "el Caribe");
 
+                    UserProfile temp = getUserProfile(user);
+                    // TODO: hacer la cosa de revisar que el usuario no exista
+
                     tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
                             + password + "'})" +
                             "MATCH (g1:Gender {name:'"+ gender +"'})" +
                             "CREATE (p)-[:IDENTIFIES]->(g1)" +
-                            "MATCH (g1:Gender {name:'"+ gender +"'})" +
-                            "CREATE (p)-[:WANTS]->(g1)"
+                            "MATCH (g2:Gender {name:'"+ gender +"'})" +
+                            "CREATE (p)-[:WANTS]->(g2)" +
+                            "MATCH (r:Region {name: '"+ region +"'}" +
+                            "CREATE (p)-[:LIVES]->(r)"
                             
                             
                             
                             );
                     return "OK";
-                    // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
+                    // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
 
 
                 }
@@ -344,7 +349,7 @@ public class EmbeddedNeo4j implements AutoCloseable {
                     LinkedList<String> myregion = new LinkedList<String>();
                     List<Record> registros = result.list();
                     for (int i = 0; i < registros.size(); i++) {
-                        myusers.add(registros.get(i).get("p2.region").asString());
+                        myregion.add(registros.get(i).get("p2.region").asString());
                     }
                     return myregion;
                 }

@@ -145,7 +145,7 @@ public class App {
                             System.out.println("Ingrese su nueva región: ");
                             try {
                                 int value = Integer.parseInt(in.nextLine());
-                                embeddedNeo4j.editUserRegion(embeddedNeo4j.region, value);
+                                // TODO: embeddedNeo4j.editUserRegion(embeddedNeo4j.region, value);
                             } catch (Exception e) {
 
                             }
