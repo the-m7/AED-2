@@ -226,62 +226,68 @@ public class EmbeddedNeo4j implements AutoCloseable {
                 public String execute(Transaction tx) {
                     System.out.println("Ingrese su nombre de usuario:");
                     String user = scanner.nextLine();
-                    System.out.println("Ingrese su contraseña:");
-                    String password = scanner.nextLine();
-
-                    System.out.println("Ingrese su nombre:");
-                    String name = scanner.nextLine();
-
-                    System.out.println("Ingrese su edad:");
-                    int age = Integer.parseInt(scanner.nextLine());
-
-                    // AGREGUAR PREGUNTAS PARA LAS RELACIONES
-
-                    System.out.println("Seleccione cómo se identifica (Mujer/Hombre):");
-                    String gender = scanner.nextLine().toLowerCase();
-
-                    if(gender == "mujer"){
-                        gender = "Female";
-                    } else if (gender == "hombre") {
-                        gender = "Male";
-                    } else {
-                        return "Error, género inválido";
-                    }
-
-                    System.out.println("Seleccione el género que le atrae (Mujer/Hombre):");
-                    String attractedTo = scanner.nextLine();
-
-                    if(attractedTo == "mujer"){
-                        attractedTo = "Female";
-                    } else if (attractedTo == "hombre") {
-                        attractedTo = "Male";
-                    } else {
-                        return "Error, género inválido";
-                    }
-
-                    System.out
-                            .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
-                    String region = scanner.nextLine();
-
-                    if(region != "Sudamérica" && region != "América Central" && region != "el Caribe");
 
                     UserProfile temp = getUserProfile(user);
-                    // TODO: hacer la cosa de revisar que el usuario no exista
+                    if(temp==null){           
 
-                    tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
-                            + password + "'})" +
-                            "MATCH (g1:Gender {name:'"+ gender +"'})" +
-                            "CREATE (p)-[:IDENTIFIES]->(g1)" +
-                            "MATCH (g2:Gender {name:'"+ gender +"'})" +
-                            "CREATE (p)-[:WANTS]->(g2)" +
-                            "MATCH (r:Region {name: '"+ region +"'}" +
-                            "CREATE (p)-[:LIVES]->(r)"
+                        System.out.println("Ingrese su contraseña:");
+                        String password = scanner.nextLine();
+
+                        System.out.println("Ingrese su nombre:");
+                        String name = scanner.nextLine();
+
+                        System.out.println("Ingrese su edad:");
+                        int age = Integer.parseInt(scanner.nextLine());
+
+                        // AGREGUAR PREGUNTAS PARA LAS RELACIONES
+
+                        System.out.println("Seleccione cómo se identifica (Mujer/Hombre):");
+                        String gender = scanner.nextLine().toLowerCase();
+
+                        if(gender == "mujer"){
+                            gender = "Female";
+                        } else if (gender == "hombre") {
+                            gender = "Male";
+                        } else {
+                            return "Error, género inválido";
+                        }
+
+                        System.out.println("Seleccione el género que le atrae (Mujer/Hombre):");
+                        String attractedTo = scanner.nextLine();
+
+                        if(attractedTo == "mujer"){
+                            attractedTo = "Female";
+                        } else if (attractedTo == "hombre") {
+                            attractedTo = "Male";
+                        } else {
+                            return "Error, género inválido";
+                        }
+
+                        System.out
+                                .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
+                        String region = scanner.nextLine();
+
+                        if(region != "Sudamérica" && region != "América Central" && region != "el Caribe");
+
+                        // TODO: hacer la cosa de revisar que el usuario no exista
+                        // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
+
+                        tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
+                        + password + "'})" +
+                        "MATCH (g1:Gender {name:'"+ gender +"'})" +
+                        "CREATE (p)-[:IDENTIFIES]->(g1)" +
+                        "MATCH (g2:Gender {name:'"+ gender +"'})" +
+                        "CREATE (p)-[:WANTS]->(g2)" +
+                        "MATCH (r:Region {name: '"+ region +"'}" +
+                        "CREATE (p)-[:LIVES]->(r)"
+                        );
+                        return "OK";
+                    } else {
+                        return "Nombre de Usuario ya está en uso";
+                    }
                             
                             
                             
-                            );
-                    return "OK";
-                    // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
 
 
                 }
