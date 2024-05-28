@@ -261,6 +261,28 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
+    public String editUserAge(String username, int value) {
+        try (Session session = driver.session()) {
+            String result = session.writeTransaction(new TransactionWork<String>() {
+
+                @Override
+                public String execute(Transaction tx) {
+                    tx.run("MATCH (n:Person {name:'"+ username +"'})" +
+                           "SET n.age = " + value);
+                    
+                    return "OK";
+
+                    // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
+
+                }
+            });
+            return result;
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+
     public String iniciarSesion(String username, String password) {
         try (Session session = driver.session()) {
             String nombreUsuario = session.readTransaction(new TransactionWork<String>() {

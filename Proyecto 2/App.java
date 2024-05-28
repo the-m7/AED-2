@@ -127,6 +127,13 @@ public class App {
                     switch (opc_3) {
                         case "1":
                             // Cambiar edad
+                            System.out.println("Ingrese su nueva edad: ");
+                            try {
+                                int value = Integer.parseInt(in.nextLine());
+                                embeddedNeo4j.editUserAge(nombre_usuario, value);
+                            } catch (Exception e) {
+                                // TODO: handle exception
+                            }
                             break;
 
                         case "2":
