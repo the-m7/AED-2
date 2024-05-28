@@ -267,9 +267,12 @@ public class EmbeddedNeo4j implements AutoCloseable {
                                 .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
                         String region = scanner.nextLine();
 
-                        if(region != "Sudamérica" && region != "América Central" && region != "el Caribe");
+                        if(region != "Sudamérica" && region != "América Central" && region != "el Caribe"){
+                            return "Error, región inválida";
+                        }
 
-                        // TODO: hacer la cosa de revisar que el usuario no exista
+                        
+                        
                         // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
 
                         tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
