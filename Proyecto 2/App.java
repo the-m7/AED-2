@@ -90,10 +90,9 @@ public class App {
         System.out.println("              C O M P A T I B I L I D A D   A M O R O S A         ");
         System.out.println("                             menu de opciones:");
         System.out.println("\n 1. Encontrar usuarios con mejor compatibilidad.");
-        System.out.println(" 2. Ver mis 'MATCH'.");
-        System.out.println(" 3. Actualizar datos sobre mi cuenta.");
-        System.out.println(" 4. Cerrar sesión.");
-        System.out.println(" 5. Salir.");
+        System.out.println(" 2. Actualizar datos sobre mi cuenta.");
+        System.out.println(" 3. Cerrar sesión.");
+        System.out.println(" 4. Salir.");
 
         String opc = in.nextLine();
 
@@ -107,10 +106,6 @@ public class App {
                 break;
 
             case "2":
-                // MATCH
-                break;
-
-            case "3":
 
                 // ACTUALIZAR DATOS
                 while (true) {
@@ -170,11 +165,11 @@ public class App {
                     }
                 }
 
-            case "4":
+            case "3":
                 // CERRAR SESIÓN
                 return -1;
-
-            case "5":
+            
+            case "4":
                 // SALIR
                 return -2;
 
