@@ -270,19 +270,78 @@ public class EmbeddedNeo4j implements AutoCloseable {
                         if(region != "Sudamérica" && region != "América Central" && region != "el Caribe"){
                             return "Error, región inválida";
                         }
+                        
+                        String[] Intereses = new String[5];
 
+                        for(int i=0; i<5; i++){
+
+                        System.out.println( "Seleccione 5 intereses" + 
+                                            "\"Deportes\"\r\n" + //
+                                            "\"Artes\"\r\n" + //
+                                            "\"Música\"\r\n" + //
+                                            "\"Ciencia\"\r\n" + //
+                                            "\"Religión\"\r\n" + //
+                                            "\"Videojuegos\"\r\n" + //
+                                            "\"Política\"\r\n" + //
+                                            "\"Cocina\"\r\n" + //
+                                            "\"Cine/Teatro\"\r\n" + //
+                                            "\"Literatura\"\r\n" + //
+                                            "\"Voluntariado\"\r\n" + //
+                                            "\"Viajes\"");
                         
+                            Intereses[i] = scanner.nextLine();
+                        }
+
+                         
+                        String[] cualidades = new String[5];
+
+                        for(int i=0; i<5; i++){
+
+                        System.out.println( "Seleccione 5 cualidades" + 
+                                            "\"Tímida\"\r\n" + //
+                                            "\"Inteligente\"\r\n" + //
+                                            "\"Aventurera\"\r\n" + //
+                                            "\"Extrovertida\"\r\n" + //
+                                            "\"Introvertida\"\r\n" + //
+                                            "\"Determinada\"\r\n" + //
+                                            "\"Calmada\"\r\n" + //
+                                            "\"Escandalosa\"\r\n" + //
+                                            "\"Frustrada\"\r\n" + //
+                                            "\"Cariñosa\"\r\n" + //
+                                            "\"Empática\"\r\n" + //
+                                            "\"Relajada\"\r\n" + //
+                                            "\"Amistosa\"\r\n" + //
+                                            "\"Ambiciosa\"\r\n" + //
+                                            "\"Dedicada\"\r\n" + //
+                                            "\"Ocupada\"\r\n" + //
+                                            "\"Solitaria\"\r\n" + //
+                                            "\"Popular\"\r\n" + //
+                                            "\"Paciente\"\r\n" + //
+                                            "\"Estable\"\r\n" + //
+                                            "\"Inestable\"\r\n" + //
+                                            "\"Afectiva\"\r\n" + //
+                                            "\"Amable\"");
                         
-                        // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
+                            cualidades[i] = scanner.nextLine();
+                        }
+
+                                            // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
 
                         tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
-                        + password + "'})" +
-                        "MATCH (g1:Gender {name:'"+ gender +"'})" +
-                        "CREATE (p)-[:IDENTIFIES]->(g1)" +
-                        "MATCH (g2:Gender {name:'"+ gender +"'})" +
-                        "CREATE (p)-[:WANTS]->(g2)" +
-                        "MATCH (r:Region {name: '"+ region +"'}" +
-                        "CREATE (p)-[:LIVES]->(r)"
+                        + password + "'})," +
+                        "(p)-[:IDENTIFIES]->(g1:Gender {name:'"+ gender +"'})," +
+                        "(p)-[:WANTS]->(g2:Gender {name:'"+ attractedTo +"'})," +
+                        "(p)-[:LIVES]->(r:Region {name: '"+ region +"'}\")," +
+                        "(p)-[:LIKES]->(i0:Interest {name: '"+ Intereses[0] +"'}\")," +
+                        "(p)-[:LIKES]->(i1:Interest {name: '"+ Intereses[1] +"'}\")," +
+                        "(p)-[:LIKES]->(i2:Interest {name: '"+ Intereses[2] +"'}\")," +
+                        "(p)-[:LIKES]->(i3:Interest {name: '"+ Intereses[3] +"'}\")," +
+                        "(p)-[:LIKES]->(i4:Interest {name: '"+ Intereses[4] +"'}\")," +
+                        "(p)-[:LIKES]->(c0:Charac {name: '"+ cualidades[0] +"'}\")," +
+                        "(p)-[:LIKES]->(c1:Charac {name: '"+ cualidades[1] +"'}\")," +
+                        "(p)-[:LIKES]->(c2:Charac {name: '"+ cualidades[2] +"'}\")," +
+                        "(p)-[:LIKES]->(c3:Charac {name: '"+ cualidades[3] +"'}\")," +
+                        "(p)-[:LIKES]->(c4:Charac {name: '"+ cualidades[4] +"'}\")," +
                         );
                         return "OK";
                     } else {
