@@ -244,20 +244,20 @@ public class EmbeddedNeo4j implements AutoCloseable {
                         System.out.println("Seleccione cómo se identifica (Mujer/Hombre):");
                         String gender = scanner.nextLine().toLowerCase();
 
-                        if(gender == "mujer"){
+                        if(gender.equalsIgnoreCase("mujer")){
                             gender = "Female";
-                        } else if (gender == "hombre") {
+                        } else if (gender.equalsIgnoreCase("hombre")) {
                             gender = "Male";
                         } else {
                             return "Error, género inválido";
                         }
 
                         System.out.println("Seleccione el género que le atrae (Mujer/Hombre):");
-                        String attractedTo = scanner.nextLine();
+                        String attractedTo = scanner.nextLine().toLowerCase();
 
-                        if(attractedTo == "mujer"){
+                        if(attractedTo.equalsIgnoreCase("mujer")){
                             attractedTo = "Female";
-                        } else if (attractedTo == "hombre") {
+                        } else if (attractedTo.equalsIgnoreCase("hombre")) {
                             attractedTo = "Male";
                         } else {
                             return "Error, género inválido";
@@ -267,7 +267,17 @@ public class EmbeddedNeo4j implements AutoCloseable {
                                 .println("Seleccione la región a la que pertenece (Sudamérica/América Central/el Caribe):");
                         String region = scanner.nextLine();
 
-                        if(region != "Sudamérica" && region != "América Central" && region != "el Caribe"){
+                        System.out.println(region);
+                        // "Sudam�rica"
+                        // "Am�rica Central"
+                        // "el Caribe"
+                        if(region.equalsIgnoreCase("Sudam�rica")){
+                            region = "Sudamérica"; 
+                        } else if (region.equalsIgnoreCase("Am�rica Central")){
+                            region = "América Central"; 
+                        } else if (region.equalsIgnoreCase("el Caribe")){
+                            region = "el Caribe"; 
+                        } else {
                             return "Error, región inválida";
                         }
                         
@@ -327,21 +337,20 @@ public class EmbeddedNeo4j implements AutoCloseable {
 
                                             // HACER LAS RELACIONES CORRESPONDINETES A  identifies, likes
 
-                        tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + "', user:" + user + ", password:'"
-                        + password + "'})," +
+                        tx.run("CREATE (p:Person {name:'" + name + "', age:" + age + ", user:'" + user + "', password:'" + password + "'})," +
                         "(p)-[:IDENTIFIES]->(g1:Gender {name:'"+ gender +"'})," +
                         "(p)-[:WANTS]->(g2:Gender {name:'"+ attractedTo +"'})," +
-                        "(p)-[:LIVES]->(r:Region {name: '"+ region +"'}\")," +
-                        "(p)-[:LIKES]->(i0:Interest {name: '"+ Intereses[0] +"'}\")," +
-                        "(p)-[:LIKES]->(i1:Interest {name: '"+ Intereses[1] +"'}\")," +
-                        "(p)-[:LIKES]->(i2:Interest {name: '"+ Intereses[2] +"'}\")," +
-                        "(p)-[:LIKES]->(i3:Interest {name: '"+ Intereses[3] +"'}\")," +
-                        "(p)-[:LIKES]->(i4:Interest {name: '"+ Intereses[4] +"'}\")," +
-                        "(p)-[:LIKES]->(c0:Charac {name: '"+ cualidades[0] +"'}\")," +
-                        "(p)-[:LIKES]->(c1:Charac {name: '"+ cualidades[1] +"'}\")," +
-                        "(p)-[:LIKES]->(c2:Charac {name: '"+ cualidades[2] +"'}\")," +
-                        "(p)-[:LIKES]->(c3:Charac {name: '"+ cualidades[3] +"'}\")," +
-                        "(p)-[:LIKES]->(c4:Charac {name: '"+ cualidades[4] +"'}\")," +
+                        "(p)-[:LIVES]->(r:Reg {name: '"+ region +"'})," +
+                        "(p)-[:LIKES]->(i0:Interest {name: '"+ Intereses[0] +"'})," +
+                        "(p)-[:LIKES]->(i1:Interest {name: '"+ Intereses[1] +"'})," +
+                        "(p)-[:LIKES]->(i2:Interest {name: '"+ Intereses[2] +"'})," +
+                        "(p)-[:LIKES]->(i3:Interest {name: '"+ Intereses[3] +"'})," +
+                        "(p)-[:LIKES]->(i4:Interest {name: '"+ Intereses[4] +"'})," +
+                        "(p)-[:IS]->(c0:Charac {name: '"+ cualidades[0] +"'})," +
+                        "(p)-[:IS]->(c1:Charac {name: '"+ cualidades[1] +"'})," +
+                        "(p)-[:IS]->(c2:Charac {name: '"+ cualidades[2] +"'})," +
+                        "(p)-[:IS]->(c3:Charac {name: '"+ cualidades[3] +"'})," +
+                        "(p)-[:IS]->(c4:Charac {name: '"+ cualidades[4] +"'})"
                         );
                         return "OK";
                     } else {
