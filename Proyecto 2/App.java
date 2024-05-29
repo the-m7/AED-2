@@ -72,7 +72,7 @@ public class App {
             case "no":
                 // crea una cuenta
                 String res = embeddedNeo4j.insertUser(in);
-                if(res == "OK"){
+                if (res == "OK") {
                     System.out.println("Cuenta creada exitosamente.");
                 } else {
                     System.out.println(res);
@@ -122,9 +122,7 @@ public class App {
                     System.out.println("Menu de modificación de datos:");
                     System.out.println("1. Cambiar mi edad.");
                     System.out.println("2. Cambiar la región a la que pertenezco.");
-                    System.out.println("3. Añadir/Eliminar un interés.");
-                    System.out.println("4. Añadir/Eliminar una característica.");
-                    System.out.println("5. Regresar al menú anterior.");
+                    System.out.println("3. Regresar al menú anterior.");
 
                     String opc_3 = in.nextLine();
 
@@ -145,18 +143,18 @@ public class App {
                             System.out.println("Ingrese su nueva región: ");
                             try {
                                 String region = in.nextLine();
-                                
-                                if(region.equalsIgnoreCase("Sudam�rica")){
-                                    region = "Sudamérica"; 
-                                } else if (region.equalsIgnoreCase("Am�rica Central")){
-                                    region = "América Central"; 
-                                } else if (region.equalsIgnoreCase("el Caribe")){
-                                    region = "el Caribe"; 
+
+                                if (region.equalsIgnoreCase("Sudamerica")) {
+                                    region = "Sudamérica";
+                                } else if (region.equalsIgnoreCase("America Central")) {
+                                    region = "América Central";
+                                } else if (region.equalsIgnoreCase("el Caribe")) {
+                                    region = "el Caribe";
                                 } else {
                                     System.out.println("Error, región inválida");
                                     break;
                                 }
-                                
+
                                 embeddedNeo4j.editUserRegion(nombre_usuario, region);
                             } catch (Exception e) {
 
@@ -164,15 +162,7 @@ public class App {
                             break;
 
                         case "3":
-                            // Añadir/Eliminar interés
-                            break;
-
-                        case "4":
-                            // Añadir/Eliminar característica
-                            break;
-
-                        case "5":
-                            // Regresar al menú anterior
+                            // Regresar al menú anterior(Salir)
                             return 0;
 
                         default:
