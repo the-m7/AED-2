@@ -140,9 +140,9 @@ public class App {
                                 String region = in.nextLine();
 
                                 if (region.equalsIgnoreCase("Sudamerica")) {
-                                    region = "Sudamérica";
+                                    region = "Sudamerica";
                                 } else if (region.equalsIgnoreCase("America Central")) {
-                                    region = "América Central";
+                                    region = "America Central";
                                 } else if (region.equalsIgnoreCase("el Caribe")) {
                                     region = "el Caribe";
                                 } else {

@@ -271,10 +271,10 @@ public class EmbeddedNeo4j implements AutoCloseable {
                         // "Sudam�rica"
                         // "Am�rica Central"
                         // "el Caribe"
-                        if(region.equalsIgnoreCase("Sudam�rica")){
-                            region = "Sudamérica"; 
-                        } else if (region.equalsIgnoreCase("Am�rica Central")){
-                            region = "América Central"; 
+                        if(region.equalsIgnoreCase("Sudamerica")){
+                            region = "Sudamerica"; 
+                        } else if (region.equalsIgnoreCase("America Central")){
+                            region = "America Central"; 
                         } else if (region.equalsIgnoreCase("el Caribe")){
                             region = "el Caribe"; 
                         } else {
