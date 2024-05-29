@@ -399,7 +399,7 @@ public class EmbeddedNeo4j implements AutoCloseable {
                     tx.run("MATCH (n:Person)-[r:LIVES]->() WHERE n.user = '" + username + "'" +
                             "DELETE r" + 
                             "MATCH (r:Reg) WHERE r.name = '" + value + "'" +
-                            "CREATE (n1:Person {name:'" + username + "'})-[r:LIVES]->(r)");
+                            "CREATE (n)-[:LIVES]->(r)");
 
                     return "OK";
 
