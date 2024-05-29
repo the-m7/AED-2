@@ -144,8 +144,20 @@ public class App {
                             // Camniar región
                             System.out.println("Ingrese su nueva región: ");
                             try {
-                                int value = Integer.parseInt(in.nextLine());
-                                // TODO: embeddedNeo4j.editUserRegion(embeddedNeo4j.region, value);
+                                String region = in.nextLine();
+                                
+                                if(region.equalsIgnoreCase("Sudam�rica")){
+                                    region = "Sudamérica"; 
+                                } else if (region.equalsIgnoreCase("Am�rica Central")){
+                                    region = "América Central"; 
+                                } else if (region.equalsIgnoreCase("el Caribe")){
+                                    region = "el Caribe"; 
+                                } else {
+                                    System.out.println("Error, región inválida");
+                                    break;
+                                }
+                                
+                                embeddedNeo4j.editUserRegion(nombre_usuario, region);
                             } catch (Exception e) {
 
                             }

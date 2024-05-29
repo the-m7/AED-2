@@ -390,6 +390,30 @@ public class EmbeddedNeo4j implements AutoCloseable {
         }
     }
 
+    public String editUserRegion(String username, String value) {
+        try (Session session = driver.session()) {
+            String result = session.writeTransaction(new TransactionWork<String>() {
+
+                @Override
+                public String execute(Transaction tx) {
+                    tx.run("MATCH (n:Person)-[r:LIVES]->() WHERE n.user = '" + username + "'" +
+                            "DELETE r" + 
+                            "MATCH (r:Reg) WHERE r.name = '" + value + "'" +
+                            "CREATE (n1:Person {name:'" + username + "'})-[r:LIVES]->(r)");
+
+                    return "OK";
+
+                    // HACER LAS RELACIONES CORRESPONDINETES A región, identifies, wants, is, likes
+
+                }
+            });
+            return result;
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+
     // Relación para región
 
     public LinkedList<String> getRegion() {
